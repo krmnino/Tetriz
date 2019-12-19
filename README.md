@@ -1,2 +1,2 @@
 # Tetriz
-Tetris with the z: My own implementation of a classic game.
+Tetris with the z: My own implementation of a classic game. [Work in progress]
