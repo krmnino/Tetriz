@@ -20,6 +20,17 @@ public class Block {
 		this.childOf = null;
 	}
 	
+	public Block(Block b) {
+		this.row_coordinates = b.row_coordinates;
+		this.column_coordinates = b.column_coordinates;
+		this.isSet = b.isSet;
+		this.shape_type = b.shape_type;
+		this.orientation = b.orientation;
+		for(int i = 0; i < 3; i++)
+			this.indexes[i] = b.indexes[i];
+		this.childOf = b.childOf;
+	}
+	
 	public void copy_data(Block b) {
 		this.isSet = b.isSet;
 		this.shape_type = b.shape_type;
@@ -144,7 +155,7 @@ public class Block {
 	}
 	
 	public void rotate_block() {
-		if(this.orientation < 3)
+		if(this.orientation <  3)
 			this.orientation++;
 		else
 			this.orientation = 0;
