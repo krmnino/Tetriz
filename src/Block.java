@@ -154,6 +154,10 @@ public class Block {
 			this.indexes[i] = new_indexes_[i];
 	}
 	
+	public void set_childOf(Block parent) {
+		this.childOf = parent;
+	}
+	
 	public void rotate_block() {
 		if(this.orientation <  3)
 			this.orientation++;
@@ -181,12 +185,10 @@ public class Block {
 	}
 	
 	public boolean compare_reference(Block b) {
-		if(this == b) {
+		if(this == b) 
 			return true;
-		}
-		else {
+		else 
 			return false;
-		}
 	}
 	
 	public String display() {
