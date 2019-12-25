@@ -267,8 +267,8 @@ public class Grid {
 	
 	public void rotate_shape() {
 		if(!rotate_check_collisions()) {
-			unmap_shape();
 			if(this.control.get_shape_type() == 1) {
+				unmap_shape();
 				boolean limiting_border = false;
 				if(this.control.get_column_coords() == 0 && this.control.get_orientation() == 0) {
 					shift_control_block(0, 2);
@@ -343,18 +343,21 @@ public class Grid {
 					default:
 						break;
 					}
-				}				
+				}	
+				this.control.rotate_block();
+				map_shape();
 			}
 			else if(this.control.get_shape_type() != 2) {
+				unmap_shape();
 				if(this.control.get_column_coords() == 0) 
 					shift_control_block(0, 1);
 				else if(this.control.get_column_coords() == this.grid[0].length - 1) 
 					shift_control_block(0, -1);
 				else if(this.control.get_row_coords() == this.grid.length - 1) 
 					shift_control_block(-1, 0);
+				this.control.rotate_block();
+				map_shape();
 			}
-			this.control.rotate_block();
-			map_shape();
 		}
 	}
 

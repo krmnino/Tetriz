@@ -105,7 +105,7 @@ public class Block {
 		 * 	7. S-shape */
 		Random rand = new Random();
 		//this.shape_type = 1 + rand.nextInt(7);
-		this.shape_type = 2;
+		this.shape_type = 3;
 		switch(this.shape_type) {
 		case(1):
 			this.indexes[0] = 0;
@@ -159,7 +159,7 @@ public class Block {
 	}
 	
 	public void rotate_block() {
-		if(this.orientation <  3)
+		if(this.orientation < 3)
 			this.orientation++;
 		else
 			this.orientation = 0;
