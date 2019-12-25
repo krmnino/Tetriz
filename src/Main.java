@@ -9,7 +9,7 @@ public class Main {
 		Scanner enter = new Scanner(System.in);	
 		//g.rotate_shape();
 		//System.out.println(g.toString());
-		
+
 		while(true) {
 			/*
 			try {
@@ -20,6 +20,7 @@ public class Main {
 			*/
 			enter.nextLine();
 			g.move_shape_right();
+			System.out.println(g.toString());
 			if(!g.move_shape_down())
 				System.out.println("Moves down");
 			else

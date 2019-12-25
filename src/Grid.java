@@ -223,18 +223,21 @@ public class Grid {
 			coords[3][1] = copy_control.get_column_coords();
 			
 		}
-		else if(copy_control.get_orientation() != 2) {
+		else if(copy_control.get_shape_type() != 2) {
 			if(copy_control.get_column_coords() == 0) 
 				copy_control.set_column_coords(copy_control.get_column_coords() + 1);
 			else if(copy_control.get_column_coords() == this.grid[0].length - 1) 
 				copy_control.set_column_coords(copy_control.get_column_coords() - 1);
 			else if(copy_control.get_row_coords() == this.grid.length - 1) 
 				copy_control.set_row_coords(copy_control.get_row_coords() - 1);
+			copy_control.rotate_block();
 			if(copy_control.get_shape_type() == 5) {
 				for(int i = 0; i < 3; i++) {
 					coords[i][0] = copy_control.get_row_coords() + this.orthogonal_coordinates[copy_control.get_index(i)][0];
 					coords[i][1] = copy_control.get_column_coords() + this.orthogonal_coordinates[copy_control.get_index(i)][1];
 				}
+				coords[3][0] = copy_control.get_row_coords();
+				coords[3][1] = copy_control.get_column_coords();
 			}
 			else {
 				for(int i = 0; i < 3; i++) {
@@ -247,6 +250,8 @@ public class Grid {
 						coords[i][1] = copy_control.get_column_coords() + this.diagonal_coordinates[copy_control.get_index(i)][1];
 					}
 				}
+				coords[3][0] = copy_control.get_row_coords();
+				coords[3][1] = copy_control.get_column_coords();
 			}
 		}
 		for(int i = 0; i < 4; i++) {
@@ -256,15 +261,14 @@ public class Grid {
 				return true;
 			if(this.grid[coords[i][0]][coords[i][1]].get_isSet() && this.grid[coords[i][0]][coords[i][1]].get_childOf() != this.control)
 				return true;
-				
 		}
 		return false;
 	}
 	
 	public void rotate_shape() {
 		if(!rotate_check_collisions()) {
+			unmap_shape();
 			if(this.control.get_shape_type() == 1) {
-				unmap_shape();
 				boolean limiting_border = false;
 				if(this.control.get_column_coords() == 0 && this.control.get_orientation() == 0) {
 					shift_control_block(0, 2);
@@ -341,7 +345,7 @@ public class Grid {
 					}
 				}				
 			}
-			else if(this.control.get_orientation() != 2) {
+			else if(this.control.get_shape_type() != 2) {
 				if(this.control.get_column_coords() == 0) 
 					shift_control_block(0, 1);
 				else if(this.control.get_column_coords() == this.grid[0].length - 1) 
@@ -436,6 +440,10 @@ public class Grid {
 			shift_control_block(0, 1);
 			map_shape();
 		}
+	}
+	
+	public void send_shape_down() {
+		Block[] blocks = get_subblocks();
 	}
 	
 	public String toString() {
