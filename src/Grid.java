@@ -21,7 +21,7 @@ public class Grid {
 	}
 	
 	public void set_control_block() {
-		this.control = this.grid[1][5];
+		this.control = this.grid[1][10];
 		this.control.set_block();
 		this.control.set_shape_type();
 		this.control.set_childOf(this.control);
@@ -360,8 +360,6 @@ public class Grid {
 			}
 		}
 	}
-
-	
 	
 	public boolean move_check_collisions(int row_offset, int column_offset) {
 		int[][] coords = new int[4][2];
@@ -400,16 +398,16 @@ public class Grid {
 		else {
 			for(int i = 0; i < 3; i++) {
 				if(i < 2) {
-					coords[i][0] = this.control.get_row_coords() + this.orthogonal_coordinates[this.control.get_index(i)][0];
-					coords[i][1] = this.control.get_column_coords() + this.orthogonal_coordinates[this.control.get_index(i)][1];
+					coords[i][0] = this.control.get_row_coords() + this.orthogonal_coordinates[this.control.get_index(i)][0] + row_offset;
+					coords[i][1] = this.control.get_column_coords() + this.orthogonal_coordinates[this.control.get_index(i)][1] + column_offset;
 				}
 				else {
-					coords[i][0] = this.control.get_row_coords() + this.diagonal_coordinates[this.control.get_index(i)][0];
-					coords[i][1] = this.control.get_column_coords() + this.diagonal_coordinates[this.control.get_index(i)][1];
+					coords[i][0] = this.control.get_row_coords() + this.diagonal_coordinates[this.control.get_index(i)][0] + row_offset;
+					coords[i][1] = this.control.get_column_coords() + this.diagonal_coordinates[this.control.get_index(i)][1] + column_offset;
 				}
 			}
-			coords[3][0] = this.control.get_row_coords();
-			coords[3][1] = this.control.get_column_coords();
+			coords[3][0] = this.control.get_row_coords() + row_offset;
+			coords[3][1] = this.control.get_column_coords() + column_offset;
 		}
 		for(int i = 0; i < 4; i++) {
 			if(coords[i][0] < 0 || coords[i][0] >= this.grid.length)

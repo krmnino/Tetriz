@@ -7,9 +7,6 @@ public class Main {
 		g.set_control_block();
 		System.out.println(g.toString());
 		Scanner enter = new Scanner(System.in);
-		g.rotate_shape();
-		g.rotate_shape();
-		g.rotate_shape();
 
 		//System.out.println(g.toString());
 
@@ -22,16 +19,13 @@ public class Main {
 			}
 			*/
 			enter.nextLine();
-			//g.move_shape_right();
+			g.move_shape_left();
 			g.move_shape_down();
-			/*
-			System.out.println(g.toString());
 			if(!g.move_shape_down())
 				System.out.println("Moves down");
 			else
 				System.out.println("Can't move down");
 			g.rotate_shape();
-			*/
 			System.out.println(g.toString());
 		}
 	}
