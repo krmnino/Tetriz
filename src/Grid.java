@@ -21,7 +21,7 @@ public class Grid {
 	}
 	
 	public void set_control_block() {
-		this.control = this.grid[1][10];
+		this.control = this.grid[1][5];
 		this.control.set_block();
 		this.control.set_shape_type();
 		this.control.set_childOf(this.control);
@@ -425,10 +425,10 @@ public class Grid {
 			unmap_shape();
 			shift_control_block(1, 0);
 			map_shape();
-			return false;
+			return true;
 		}
 		else
-			return true;
+			return false;
 	}
 
 	public void move_shape_left() {
@@ -448,7 +448,50 @@ public class Grid {
 	}
 	
 	public void send_shape_down() {
-		
+		int row_offset = 0;
+		while(true) {
+			if(!move_check_collisions(row_offset, 0)) 
+				row_offset++;
+			else 
+				break;
+		}
+		unmap_shape();
+		shift_control_block(row_offset - 1, 0);
+		map_shape();
+	}
+	
+	public boolean is_line_complete() {
+		int[] row_coords = new int[4];
+		if(this.control.get_shape_type() == 1) {
+			row_coords[0] = this.control.get_row_coords() + this.orthogonal_coordinates[this.control.get_index(0)][0];
+			row_coords[1] = this.control.get_row_coords() + this.orthogonal_coordinates[this.control.get_index(1)][0];
+			if(this.control.get_orientation() == 0) 
+				row_coords[2] = this.control.get_row_coords() + this.orthogonal_coordinates[this.control.get_index(2)][0] + 1;
+			else if(this.control.get_orientation() == 1) 
+				row_coords[2] = this.control.get_row_coords() + this.orthogonal_coordinates[this.control.get_index(2)][0];
+			else if(this.control.get_orientation() == 2) 
+				row_coords[2] = this.control.get_row_coords() + this.orthogonal_coordinates[this.control.get_index(2)][0] - 1;
+			else 
+				row_coords[2] = this.control.get_row_coords() + this.orthogonal_coordinates[this.control.get_index(2)][0];
+			row_coords[3] = this.control.get_row_coords();
+		}
+		else if(this.control.get_shape_type() == 5) {
+			for(int i = 0; i < 3; i++) 
+				row_coords[i] = this.control.get_row_coords() + this.orthogonal_coordinates[this.control.get_index(i)][0];
+			row_coords[3] = this.control.get_row_coords();
+		}
+		else {
+			for(int i = 0; i < 3; i++) {
+				if(i < 2) {
+					row_coords[i] = this.control.get_row_coords() + this.orthogonal_coordinates[this.control.get_index(i)][0];
+				}
+				else {
+					row_coords[i] = this.control.get_row_coords() + this.diagonal_coordinates[this.control.get_index(i)][0];
+				}
+			}
+			row_coords[3] = this.control.get_row_coords();
+		}
+		return true;
 	}
 	
 	public String toString() {
