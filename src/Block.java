@@ -105,7 +105,7 @@ public class Block {
 		 * 	7. S-shape */
 		Random rand = new Random();
 		this.shape_type = 1 + rand.nextInt(7);
-		//this.shape_type = 5;
+		//this.shape_type = 1;
 		switch(this.shape_type) {
 		case(1):
 			this.indexes[0] = 0;
@@ -177,11 +177,7 @@ public class Block {
 		this.orientation = 0;
 		for(int i = 0; i < 3; i++)
 			this.indexes[i] = 0;
-	}
-	
-	public void clear_subblock() {
 		this.childOf = null;
-		this.isSet = false;
 	}
 	
 	public boolean compare_reference(Block b) {
@@ -198,4 +194,3 @@ public class Block {
 			return "_";
 	}
 }
-

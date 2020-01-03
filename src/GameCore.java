@@ -38,7 +38,6 @@ public class GameCore extends JPanel {
 		frame.setSize(250, 450);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
 	}
 	
 	public static void game_loop() {
@@ -47,8 +46,10 @@ public class GameCore extends JPanel {
 		while(true) {
 			try {
 				Thread.sleep(1000);
-				if(!g.move_shape_down())
+				if(!g.move_shape_down()) {
+					g.check_completed_lines();
 					g.set_control_block();
+				}
 				display.setText(g.toString());
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -76,7 +77,10 @@ public class GameCore extends JPanel {
 				break;
 			case('S'):
 			case('s'):
-				g.move_shape_down();
+				if(!g.move_shape_down()) {
+					g.check_completed_lines();
+					g.set_control_block();
+				}
 				display.setText(g.toString());
 				System.out.println("D - Right");
 				break;
@@ -88,7 +92,10 @@ public class GameCore extends JPanel {
 				break;
 			case(' '):
 				g.send_shape_down();
+				g.check_completed_lines();
+				g.set_control_block();
 				display.setText(g.toString());
+				//g.set_control_block();
 				System.out.println("ESP - Send down");
 				break;
 			default:
@@ -102,6 +109,34 @@ public class GameCore extends JPanel {
 	public static void main(String[] args) {
 		set_GUI();
 		game_loop();
+		/*/TEST AREA
+		g.set_control_block();
+		g.grid[21][0].set_block();
+		g.grid[21][1].set_block();
+		g.grid[21][2].set_block();
+		g.grid[21][3].set_block();
+		g.grid[21][4].set_block();
+		g.grid[21][5].set_block();
+		g.grid[21][6].set_block();
+		g.grid[21][7].set_block();
+		g.grid[21][8].set_block();
+		g.grid[21][9].set_block();
+		g.grid[20][0].set_block();
+		g.grid[20][1].set_block();
+		g.grid[20][2].set_block();
+		g.grid[20][3].set_block();
+		g.grid[20][4].set_block();
+		g.grid[20][5].set_block();
+		g.grid[20][6].set_block();
+		g.grid[20][7].set_block();
+		g.grid[20][8].set_block();
+		g.grid[20][9].set_block();
+		System.out.println(g.toString());
+		g.move_shape_down();
+		System.out.println(g.toString());
+		g.check_completed_lines();
+		System.out.println(g.toString());
+		*///TEST AREA
 	}
 	/*
 	public static void main(String[] args) {
