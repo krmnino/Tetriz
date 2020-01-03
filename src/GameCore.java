@@ -131,6 +131,7 @@ public class GameCore extends JPanel {
 		g.grid[20][7].set_block();
 		g.grid[20][8].set_block();
 		g.grid[20][9].set_block();
+		g.grid[19][8].set_block();
 		System.out.println(g.toString());
 		g.move_shape_down();
 		System.out.println(g.toString());

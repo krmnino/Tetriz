@@ -3,9 +3,11 @@ import java.util.Arrays;
 public class Grid {
 	private final int ROWS = 22;
 	private final int COLUMNS = 11;
-	private final int[][] orthogonal_coordinates = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
-	private final int[][] diagonal_coordinates = {{-1, 1}, {1, 1}, {1, -1}, {-1, -1}};
-	public Block[][] grid;
+	private final int CONTROL_ROW_COORDS = 1;
+	private final int CONTROL_COLUMN_COORDS = 5;
+	private final int[][] ORTHOGONAL_COORDINATES = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+	private final int[][] DIAGONAL_COORDINATES = {{-1, 1}, {1, 1}, {1, -1}, {-1, -1}};
+	private Block[][] grid;
 	private Block control;
 	
 	public Grid() {
@@ -25,8 +27,8 @@ public class Grid {
 	}
 	
 	public void set_control_block() {
-		this.control = this.grid[1][5];
-		//this.control = this.grid[18][10];
+		this.control = this.grid[CONTROL_ROW_COORDS][CONTROL_COLUMN_COORDS];
+		//this.control = this.grid[18][8];
 		this.control.set_block();
 		this.control.set_shape_type();
 		this.control.set_childOf(this.control);
@@ -39,8 +41,8 @@ public class Grid {
 			int column_subblock;
 			switch(this.control.get_shape_type()) {
 			case(1):
-				row_subblock = this.control.get_row_coords() + this.orthogonal_coordinates[this.control.get_index(i)][0];
-				column_subblock = this.control.get_column_coords() + this.orthogonal_coordinates[this.control.get_index(i)][1];
+				row_subblock = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][0];
+				column_subblock = this.control.get_column_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][1];
 				if(i < 2) {
 					this.grid[row_subblock][column_subblock].set_subblock(this.control);
 				}
@@ -56,19 +58,19 @@ public class Grid {
 				}
 				break;
 			case(5):
-				row_subblock = this.control.get_row_coords() + this.orthogonal_coordinates[this.control.get_index(i)][0];
-				column_subblock = this.control.get_column_coords() + this.orthogonal_coordinates[this.control.get_index(i)][1];
+				row_subblock = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][0];
+				column_subblock = this.control.get_column_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][1];
 				this.grid[row_subblock][column_subblock].set_subblock(this.control);
 				break;
 			default:
 				if(i < 2) {
-					row_subblock = this.control.get_row_coords() + this.orthogonal_coordinates[this.control.get_index(i)][0];
-					column_subblock = this.control.get_column_coords() + this.orthogonal_coordinates[this.control.get_index(i)][1];
+					row_subblock = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][0];
+					column_subblock = this.control.get_column_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][1];
 					this.grid[row_subblock][column_subblock].set_subblock(this.control);
 				}
 				else {
-					row_subblock = this.control.get_row_coords() + this.diagonal_coordinates[this.control.get_index(i)][0];
-					column_subblock = this.control.get_column_coords() + this.diagonal_coordinates[this.control.get_index(i)][1];
+					row_subblock = this.control.get_row_coords() + this.DIAGONAL_COORDINATES[this.control.get_index(i)][0];
+					column_subblock = this.control.get_column_coords() + this.DIAGONAL_COORDINATES[this.control.get_index(i)][1];
 					this.grid[row_subblock][column_subblock].set_subblock(this.control);
 				}	
 			}
@@ -81,8 +83,8 @@ public class Grid {
 			int column_subblock;
 			switch(this.control.get_shape_type()) {
 			case(1):
-				row_subblock = this.control.get_row_coords() + this.orthogonal_coordinates[this.control.get_index(i)][0];
-				column_subblock = this.control.get_column_coords() + this.orthogonal_coordinates[this.control.get_index(i)][1];
+				row_subblock = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][0];
+				column_subblock = this.control.get_column_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][1];
 				if(i < 2) {
 					this.grid[row_subblock][column_subblock].clear_block();
 				}
@@ -98,19 +100,19 @@ public class Grid {
 				}
 				break;
 			case(5):
-				row_subblock = this.control.get_row_coords() + this.orthogonal_coordinates[this.control.get_index(i)][0];
-				column_subblock = this.control.get_column_coords() + this.orthogonal_coordinates[this.control.get_index(i)][1];
+				row_subblock = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][0];
+				column_subblock = this.control.get_column_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][1];
 				this.grid[row_subblock][column_subblock].clear_block();
 				break;
 			default:
 				if(i < 2) {
-					row_subblock = this.control.get_row_coords() + this.orthogonal_coordinates[this.control.get_index(i)][0];
-					column_subblock = this.control.get_column_coords() + this.orthogonal_coordinates[this.control.get_index(i)][1];
+					row_subblock = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][0];
+					column_subblock = this.control.get_column_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][1];
 					this.grid[row_subblock][column_subblock].clear_block();
 				}
 				else {
-					row_subblock = this.control.get_row_coords() + this.diagonal_coordinates[this.control.get_index(i)][0];
-					column_subblock = this.control.get_column_coords() + this.diagonal_coordinates[this.control.get_index(i)][1];
+					row_subblock = this.control.get_row_coords() + this.DIAGONAL_COORDINATES[this.control.get_index(i)][0];
+					column_subblock = this.control.get_column_coords() + this.DIAGONAL_COORDINATES[this.control.get_index(i)][1];
 					this.grid[row_subblock][column_subblock].clear_block();
 				}
 			}
@@ -204,25 +206,25 @@ public class Grid {
 				}
 			}
 			copy_control.rotate_block();
-			coords[0][0] = copy_control.get_row_coords() + this.orthogonal_coordinates[copy_control.get_index(0)][0];
-			coords[0][1] = copy_control.get_column_coords() + this.orthogonal_coordinates[copy_control.get_index(0)][1];
-			coords[1][0] = copy_control.get_row_coords() + this.orthogonal_coordinates[copy_control.get_index(1)][0];
-			coords[1][1] = copy_control.get_column_coords() + this.orthogonal_coordinates[copy_control.get_index(1)][1];
+			coords[0][0] = copy_control.get_row_coords() + this.ORTHOGONAL_COORDINATES[copy_control.get_index(0)][0];
+			coords[0][1] = copy_control.get_column_coords() + this.ORTHOGONAL_COORDINATES[copy_control.get_index(0)][1];
+			coords[1][0] = copy_control.get_row_coords() + this.ORTHOGONAL_COORDINATES[copy_control.get_index(1)][0];
+			coords[1][1] = copy_control.get_column_coords() + this.ORTHOGONAL_COORDINATES[copy_control.get_index(1)][1];
 			if(copy_control.get_orientation() == 0) {
-				coords[2][0] = copy_control.get_row_coords() + this.orthogonal_coordinates[copy_control.get_index(2)][0] + 1;
-				coords[2][1] = copy_control.get_column_coords() + this.orthogonal_coordinates[copy_control.get_index(2)][1];
+				coords[2][0] = copy_control.get_row_coords() + this.ORTHOGONAL_COORDINATES[copy_control.get_index(2)][0] + 1;
+				coords[2][1] = copy_control.get_column_coords() + this.ORTHOGONAL_COORDINATES[copy_control.get_index(2)][1];
 			}
 			else if(copy_control.get_orientation() == 1) {
-				coords[2][0] = copy_control.get_row_coords() + this.orthogonal_coordinates[copy_control.get_index(2)][0];
-				coords[2][1] = copy_control.get_column_coords() + this.orthogonal_coordinates[copy_control.get_index(2)][1] - 1;
+				coords[2][0] = copy_control.get_row_coords() + this.ORTHOGONAL_COORDINATES[copy_control.get_index(2)][0];
+				coords[2][1] = copy_control.get_column_coords() + this.ORTHOGONAL_COORDINATES[copy_control.get_index(2)][1] - 1;
 			}
 			else if(copy_control.get_orientation() == 2) {
-				coords[2][0] = copy_control.get_row_coords() + this.orthogonal_coordinates[copy_control.get_index(2)][0] - 1;
-				coords[2][1] = copy_control.get_column_coords() + this.orthogonal_coordinates[copy_control.get_index(2)][1];
+				coords[2][0] = copy_control.get_row_coords() + this.ORTHOGONAL_COORDINATES[copy_control.get_index(2)][0] - 1;
+				coords[2][1] = copy_control.get_column_coords() + this.ORTHOGONAL_COORDINATES[copy_control.get_index(2)][1];
 			}
 			else {
-				coords[2][0] = copy_control.get_row_coords() + this.orthogonal_coordinates[copy_control.get_index(2)][0];
-				coords[2][1] = copy_control.get_column_coords() + this.orthogonal_coordinates[copy_control.get_index(2)][1] + 1;
+				coords[2][0] = copy_control.get_row_coords() + this.ORTHOGONAL_COORDINATES[copy_control.get_index(2)][0];
+				coords[2][1] = copy_control.get_column_coords() + this.ORTHOGONAL_COORDINATES[copy_control.get_index(2)][1] + 1;
 			}
 			coords[3][0] = copy_control.get_row_coords();
 			coords[3][1] = copy_control.get_column_coords();
@@ -238,8 +240,8 @@ public class Grid {
 			copy_control.rotate_block();
 			if(copy_control.get_shape_type() == 5) {
 				for(int i = 0; i < 3; i++) {
-					coords[i][0] = copy_control.get_row_coords() + this.orthogonal_coordinates[copy_control.get_index(i)][0];
-					coords[i][1] = copy_control.get_column_coords() + this.orthogonal_coordinates[copy_control.get_index(i)][1];
+					coords[i][0] = copy_control.get_row_coords() + this.ORTHOGONAL_COORDINATES[copy_control.get_index(i)][0];
+					coords[i][1] = copy_control.get_column_coords() + this.ORTHOGONAL_COORDINATES[copy_control.get_index(i)][1];
 				}
 				coords[3][0] = copy_control.get_row_coords();
 				coords[3][1] = copy_control.get_column_coords();
@@ -247,12 +249,12 @@ public class Grid {
 			else {
 				for(int i = 0; i < 3; i++) {
 					if(i < 2) {
-						coords[i][0] = copy_control.get_row_coords() + this.orthogonal_coordinates[copy_control.get_index(i)][0];
-						coords[i][1] = copy_control.get_column_coords() + this.orthogonal_coordinates[copy_control.get_index(i)][1];
+						coords[i][0] = copy_control.get_row_coords() + this.ORTHOGONAL_COORDINATES[copy_control.get_index(i)][0];
+						coords[i][1] = copy_control.get_column_coords() + this.ORTHOGONAL_COORDINATES[copy_control.get_index(i)][1];
 					}
 					else {
-						coords[i][0] = copy_control.get_row_coords() + this.diagonal_coordinates[copy_control.get_index(i)][0];
-						coords[i][1] = copy_control.get_column_coords() + this.diagonal_coordinates[copy_control.get_index(i)][1];
+						coords[i][0] = copy_control.get_row_coords() + this.DIAGONAL_COORDINATES[copy_control.get_index(i)][0];
+						coords[i][1] = copy_control.get_column_coords() + this.DIAGONAL_COORDINATES[copy_control.get_index(i)][1];
 					}
 				}
 				coords[3][0] = copy_control.get_row_coords();
@@ -369,46 +371,46 @@ public class Grid {
 	private boolean move_check_collisions(int row_offset, int column_offset) {
 		int[][] coords = new int[4][2];
 		if(this.control.get_shape_type() == 1) {
-			coords[0][0] = this.control.get_row_coords() + this.orthogonal_coordinates[this.control.get_index(0)][0] + row_offset;
-			coords[0][1] = this.control.get_column_coords() + this.orthogonal_coordinates[this.control.get_index(0)][1] + column_offset;
-			coords[1][0] = this.control.get_row_coords() + this.orthogonal_coordinates[this.control.get_index(1)][0] + row_offset;
-			coords[1][1] = this.control.get_column_coords() + this.orthogonal_coordinates[this.control.get_index(1)][1] + column_offset;
+			coords[0][0] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(0)][0] + row_offset;
+			coords[0][1] = this.control.get_column_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(0)][1] + column_offset;
+			coords[1][0] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(1)][0] + row_offset;
+			coords[1][1] = this.control.get_column_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(1)][1] + column_offset;
 			if(this.control.get_orientation() == 0) {
-				coords[2][0] = this.control.get_row_coords() + this.orthogonal_coordinates[this.control.get_index(2)][0] + row_offset + 1;
-				coords[2][1] = this.control.get_column_coords() + this.orthogonal_coordinates[this.control.get_index(2)][1] + column_offset;
+				coords[2][0] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(2)][0] + row_offset + 1;
+				coords[2][1] = this.control.get_column_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(2)][1] + column_offset;
 			}
 			else if(this.control.get_orientation() == 1) {
-				coords[2][0] = this.control.get_row_coords() + this.orthogonal_coordinates[this.control.get_index(2)][0] + row_offset;
-				coords[2][1] = this.control.get_column_coords() + this.orthogonal_coordinates[this.control.get_index(2)][1] + column_offset - 1;
+				coords[2][0] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(2)][0] + row_offset;
+				coords[2][1] = this.control.get_column_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(2)][1] + column_offset - 1;
 			}
 			else if(this.control.get_orientation() == 2) {
-				coords[2][0] = this.control.get_row_coords() + this.orthogonal_coordinates[this.control.get_index(2)][0] + row_offset - 1;
-				coords[2][1] = this.control.get_column_coords() + this.orthogonal_coordinates[this.control.get_index(2)][1] + column_offset;
+				coords[2][0] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(2)][0] + row_offset - 1;
+				coords[2][1] = this.control.get_column_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(2)][1] + column_offset;
 			}
 			else {
-				coords[2][0] = this.control.get_row_coords() + this.orthogonal_coordinates[this.control.get_index(2)][0] + row_offset;
-				coords[2][1] = this.control.get_column_coords() + this.orthogonal_coordinates[this.control.get_index(2)][1] + column_offset + 1;
+				coords[2][0] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(2)][0] + row_offset;
+				coords[2][1] = this.control.get_column_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(2)][1] + column_offset + 1;
 			}
 			coords[3][0] = this.control.get_row_coords() + row_offset;
 			coords[3][1] = this.control.get_column_coords() + column_offset;
 		}
 		else if(this.control.get_shape_type() == 5) {
 			for(int i = 0; i < 3; i++) {
-				coords[i][0] = this.control.get_row_coords() + this.orthogonal_coordinates[this.control.get_index(i)][0] + row_offset;
-				coords[i][1] = this.control.get_column_coords() + this.orthogonal_coordinates[this.control.get_index(i)][1] + column_offset;
+				coords[i][0] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][0] + row_offset;
+				coords[i][1] = this.control.get_column_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][1] + column_offset;
 			}
 			coords[3][0] = this.control.get_row_coords() + row_offset;
-			coords[3][1] = this.control.get_column_coords() + row_offset;
+			coords[3][1] = this.control.get_column_coords() + column_offset;
 		}
 		else {
 			for(int i = 0; i < 3; i++) {
 				if(i < 2) {
-					coords[i][0] = this.control.get_row_coords() + this.orthogonal_coordinates[this.control.get_index(i)][0] + row_offset;
-					coords[i][1] = this.control.get_column_coords() + this.orthogonal_coordinates[this.control.get_index(i)][1] + column_offset;
+					coords[i][0] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][0] + row_offset;
+					coords[i][1] = this.control.get_column_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][1] + column_offset;
 				}
 				else {
-					coords[i][0] = this.control.get_row_coords() + this.diagonal_coordinates[this.control.get_index(i)][0] + row_offset;
-					coords[i][1] = this.control.get_column_coords() + this.diagonal_coordinates[this.control.get_index(i)][1] + column_offset;
+					coords[i][0] = this.control.get_row_coords() + this.DIAGONAL_COORDINATES[this.control.get_index(i)][0] + row_offset;
+					coords[i][1] = this.control.get_column_coords() + this.DIAGONAL_COORDINATES[this.control.get_index(i)][1] + column_offset;
 				}
 			}
 			coords[3][0] = this.control.get_row_coords() + row_offset;
@@ -488,29 +490,29 @@ public class Grid {
 		for(int i = 0; i < row_coords.length; i++)
 			row_coords[i] = -1;
 		if(this.control.get_shape_type() == 1) {
-			row_coords[0] = this.control.get_row_coords() + this.orthogonal_coordinates[this.control.get_index(0)][0];
-			row_coords[1] = this.control.get_row_coords() + this.orthogonal_coordinates[this.control.get_index(1)][0];
+			row_coords[0] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(0)][0];
+			row_coords[1] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(1)][0];
 			if(this.control.get_orientation() == 0) 
-				row_coords[2] = this.control.get_row_coords() + this.orthogonal_coordinates[this.control.get_index(2)][0] + 1;
+				row_coords[2] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(2)][0] + 1;
 			else if(this.control.get_orientation() == 1) 
-				row_coords[2] = this.control.get_row_coords() + this.orthogonal_coordinates[this.control.get_index(2)][0];
+				row_coords[2] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(2)][0];
 			else if(this.control.get_orientation() == 2) 
-				row_coords[2] = this.control.get_row_coords() + this.orthogonal_coordinates[this.control.get_index(2)][0] - 1;
+				row_coords[2] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(2)][0] - 1;
 			else 
-				row_coords[2] = this.control.get_row_coords() + this.orthogonal_coordinates[this.control.get_index(2)][0];
+				row_coords[2] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(2)][0];
 			row_coords[3] = this.control.get_row_coords();
 		}
 		else if(this.control.get_shape_type() == 5) {
 			for(int i = 0; i < 3; i++) 
-				row_coords[i] = this.control.get_row_coords() + this.orthogonal_coordinates[this.control.get_index(i)][0];
+				row_coords[i] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][0];
 			row_coords[3] = this.control.get_row_coords();
 		}
 		else {
 			for(int i = 0; i < 3; i++) {
 				if(i < 2) 
-					row_coords[i] = this.control.get_row_coords() + this.orthogonal_coordinates[this.control.get_index(i)][0];
+					row_coords[i] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][0];
 				else 
-					row_coords[i] = this.control.get_row_coords() + this.diagonal_coordinates[this.control.get_index(i)][0];
+					row_coords[i] = this.control.get_row_coords() + this.DIAGONAL_COORDINATES[this.control.get_index(i)][0];
 			}
 			row_coords[3] = this.control.get_row_coords();
 		}

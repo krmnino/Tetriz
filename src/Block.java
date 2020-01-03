@@ -105,7 +105,6 @@ public class Block {
 		 * 	7. S-shape */
 		Random rand = new Random();
 		this.shape_type = 1 + rand.nextInt(7);
-		//this.shape_type = 1;
 		switch(this.shape_type) {
 		case(1):
 			this.indexes[0] = 0;
