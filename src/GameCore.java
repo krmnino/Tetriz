@@ -10,14 +10,14 @@ import javax.swing.border.LineBorder;
 @SuppressWarnings("serial")
 public class GameCore extends JPanel {
 	
-	private static JTextArea display;
-	private static Grid g = new Grid();
+	private static JTextArea display;	//Creates text area where the grid is displayed
+	private static Grid g = new Grid();	//Creates new grid of blocks object
 	
 	public GameCore() {
 		
-		KeyboardDectection listener = new KeyboardDectection();
-		addKeyListener(listener);
-		setFocusable(true);
+		KeyboardDectection listener = new KeyboardDectection(); //Initialize keyboard detection object
+		addKeyListener(listener);	//Add key listener to Key detection object
+		setFocusable(true);	//Sets focusable to true and overrides original default state
 	}
 	
 	public static void set_GUI() {
