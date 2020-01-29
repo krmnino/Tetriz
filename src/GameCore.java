@@ -20,164 +20,92 @@ public class GameCore extends JPanel {
 		setFocusable(true);	//Sets focusable to true and overrides original default state
 	}
 	
-	public static void set_GUI() {
-		JFrame frame = new JFrame();
-		frame.setLayout(null);
-		GameCore key_detector = new GameCore();
-		display = new JTextArea();
-		display.setSize(120, 370);
-		display.setLocation(50, 20);
-		display.add(key_detector);
-		display.setVisible(true);
-		display.setBackground(SystemColor.info);
-		display.setBorder(new LineBorder(new Color(0, 0, 0)));
-		frame.add(key_detector);
-		frame.add(display);
-		frame.setTitle("Tetriz");
-		frame.setFocusCycleRoot(true);
-		frame.setSize(250, 450);
-		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	public static void set_GUI() {	//set GUI elements and launch it
+		JFrame frame = new JFrame();	//set frame object that contains the display and other things
+		frame.setLayout(null);	// not set a layout for the frame to allow place objects freely (any coordinates)
+		GameCore key_detector = new GameCore();	// initialize new instance of key detector class
+		display = new JTextArea();	//initialize new JTextArea to be the screen
+		display.setSize(120, 370);	//set size of display in pixels
+		display.setLocation(50, 20);	//set location of display in frame
+		display.setVisible(true);	//make display visible
+		display.setBackground(SystemColor.info);	//set display background color to an arbitrary color that contrasts
+		display.setBorder(new LineBorder(new Color(0, 0, 0)));	//let the display have a black border
+		frame.add(key_detector); //add key detector object to frame
+		frame.add(display);	//add display to frame
+		frame.setTitle("Tetriz");	//set frame title as "Tetriz"
+		frame.setFocusCycleRoot(true);	//set frame as root of focus traversal cycle
+		frame.setSize(250, 450);	//set frame size
+		frame.setVisible(true);	//set frame visible (display window)
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	//set default close operation (press X to close)
 	}
 	
 	public static void game_loop() {
-		g.set_control_block();
-		display.setText(g.toString());
-		while(true) {
+		g.set_control_block();	//set initial control block in grid
+		display.setText(g.toString());	//display grid in display
+		while(true) { //actual game loop 
 			try {
-				Thread.sleep(1000);
-				if(!g.move_shape_down()) {
-					g.check_completed_lines();
-					g.set_control_block();
+				Thread.sleep(1000);	//make program sleep for 1 second before sending the next update
+				if(!g.move_shape_down()) {	//if shape could not move
+					g.check_completed_lines();	//check rows that are full
+					g.set_control_block();	//set new control block at the top
 				}
-				display.setText(g.toString());
+				display.setText(g.toString());	//else, allow the shape to move and update the grid 
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace();	
 			}
 		}
 	}
 	
 	class KeyboardDectection implements KeyListener {
 		
-		public void keyTyped(KeyEvent e) {}
+		public void keyTyped(KeyEvent e) {}	//mandatory keyReleased fn() due to abstract class
 		
 		public void keyPressed(KeyEvent e) {
-			switch(e.getKeyChar()) {
-			case('W'):
+			switch(e.getKeyChar()) {	//get char from KeyEvent object when a key is pressed
+			case('W'):	//W - rotate shape
 			case('w'):
-				g.rotate_shape();
-				display.setText(g.toString());
-				System.out.println("W - Rotate");
+				g.rotate_shape();	//rotate control block
+				display.setText(g.toString());	//update screen after remapping
+				System.out.println("W - Rotate");	//display in console that 'w' was pressed
 				break;
-			case('A'):
+			case('A'):	//A - move shape left
 			case('a'):
-				g.move_shape_left();
-				display.setText(g.toString());
-				System.out.println("A - Left");
+				g.move_shape_left();	//move control block left
+				display.setText(g.toString());	//update screen after remapping
+				System.out.println("A - Left");	//display in console that 'a' was pressed
 				break;
-			case('S'):
+			case('S'): //S - move shape down
 			case('s'):
-				if(!g.move_shape_down()) {
-					g.check_completed_lines();
-					g.set_control_block();
+				if(!g.move_shape_down()) {	//if control block could not move down...
+					g.check_completed_lines();	//check if there are any completed rows in grid
+					g.set_control_block();	//set new control block at the top
 				}
-				display.setText(g.toString());
-				System.out.println("D - Right");
+				display.setText(g.toString());	//update screen after remapping
+				System.out.println("D - Right");	//display in console that 'd' was pressed
 				break;
-			case('D'):
+			case('D'):	//D - move shape right
 			case('d'):
-				g.move_shape_right();
-				display.setText(g.toString());
-				System.out.println("S - Down");
+				g.move_shape_right();	//move control block right
+				display.setText(g.toString());	//update screen after remapping
+				System.out.println("S - Down");	//display in console that 's' was pressed
 				break;
-			case(' '):
-				g.send_shape_down();
-				g.check_completed_lines();
-				g.set_control_block();
-				display.setText(g.toString());
-				//g.set_control_block();
-				System.out.println("ESP - Send down");
+			case(' '): //ESPACE - send shape down
+				g.send_shape_down();	//send control block down
+				g.check_completed_lines();	//check if there are any completed rows in grid
+				g.set_control_block();	//set new control block at the top
+				display.setText(g.toString());	//update screen after remapping
+				System.out.println("ESP - Send down");	//display in console that ' ' was pressed
 				break;
 			default:
 				break;
 			}
 		}
 		
-		public void keyReleased(KeyEvent e) {}
+		public void keyReleased(KeyEvent e) {}	//mandatory keyReleased fn() due to abstract class
 	}
 	
 	public static void main(String[] args) {
-		set_GUI();
-		game_loop();
-		/*/TEST AREA
-		g.set_control_block();
-		g.grid[21][0].set_block();
-		g.grid[21][1].set_block();
-		g.grid[21][2].set_block();
-		g.grid[21][3].set_block();
-		g.grid[21][4].set_block();
-		g.grid[21][5].set_block();
-		g.grid[21][6].set_block();
-		g.grid[21][7].set_block();
-		g.grid[21][8].set_block();
-		g.grid[21][9].set_block();
-		g.grid[20][0].set_block();
-		g.grid[20][1].set_block();
-		g.grid[20][2].set_block();
-		g.grid[20][3].set_block();
-		g.grid[20][4].set_block();
-		g.grid[20][5].set_block();
-		g.grid[20][6].set_block();
-		g.grid[20][7].set_block();
-		g.grid[20][8].set_block();
-		g.grid[20][9].set_block();
-		g.grid[19][8].set_block();
-		System.out.println(g.toString());
-		g.move_shape_down();
-		System.out.println(g.toString());
-		g.check_completed_lines();
-		System.out.println(g.toString());
-		*///TEST AREA
+		set_GUI();	//set up the GUI and its elements
+		game_loop();	//start the game loop
 	}
-	/*
-	public static void main(String[] args) {
-        Grid g = new Grid();
-        g.set_control_block();
-        System.out.println(g.toString());
-        Scanner enter = new Scanner(System.in);
-        
-        while(true) {
-            try {
-                char input = (char) System.in.read();
-                switch (input) {
-                case('w'):
-                case('W'):
-                    g.rotate_shape(); 
-                    break;
-                case('a'):
-                case('A'):
-                    g.move_shape_left();
-                    break;
-                case('d'):
-                case('D'):
-                    g.move_shape_right();
-                    break;
-                case('s'):
-                case('S'):
-                    if(!g.move_shape_down())
-                        g.set_control_block();
-                    break;
-                case(' '):
-                    g.send_shape_down();
-                    g.set_control_block();
-                    break;
-                default:
-                    break;
-                }
-                System.out.println(g.toString());
-            } catch (IOException e) {}
-            
-        }
-    }
-	 */
 }
