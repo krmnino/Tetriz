@@ -1,29 +1,31 @@
 import java.util.Arrays;
 
 public class Grid {
-	private final int ROWS = 22;
-	private final int COLUMNS = 11;
-	private final int CONTROL_ROW_COORDS = 1;
-	private final int CONTROL_COLUMN_COORDS = 5;
-	private final int[][] ORTHOGONAL_COORDINATES = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+	private final int ROWS = 22;	//constant number of rows in grid
+	private final int COLUMNS = 11;	//constant number of columns in grid
+	private final int CONTROL_ROW_COORDS = 1;	//row position where control block spawns
+	private final int CONTROL_COLUMN_COORDS = 5;	//column position where control block spawns
+	private final int[][] ORTHOGONAL_COORDINATES = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};	
+	//orthogonal coordinates for blocks orbiting the control block in an orthogonal position
 	private final int[][] DIAGONAL_COORDINATES = {{-1, 1}, {1, 1}, {1, -1}, {-1, -1}};
-	private Block[][] grid;
-	private Block control;
+	//diagonal coordinates for blocks orbiting the  control block in a diagonal position
+	private Block[][] grid;	//2D array of Block objects, blocks are not set by default
+	private Block control;	//block instance that serves as a reference to the control block in the grid
 	
-	public Grid() {
-		this.grid = new Block[ROWS][COLUMNS];
-		this.control = null;
-		initialize_grid();
+	public Grid() {	//constructor method of Grid, takes no arguments
+		this.grid = new Block[ROWS][COLUMNS];	//set size of 2D array to ROWS number of rows and COLUMNS number of columns
+		this.control = null;	//set reference to control block to null
+		initialize_grid();	//call initialize_grid fn() that initializes each block object in the grid
 	}
 	
-	public Block get_control() {
+	public Block get_control() {	//function that returns reference to control block (used for debugging purposes)
 		return this.control;
 	}
 	
-	public void initialize_grid() {
-		for(int i = 0; i < ROWS; i++) 
+	public void initialize_grid() {	//initializes all block elements in the grid
+		for(int i = 0; i < ROWS; i++) 	
 			for(int j = 0; j < COLUMNS; j++)
-				this.grid[i][j] = new Block(i, j);
+				this.grid[i][j] = new Block(i, j);	//initialize block at i row and j column to i and j coordinates
 	}
 	
 	public void set_control_block() {
