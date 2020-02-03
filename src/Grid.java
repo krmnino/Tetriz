@@ -28,20 +28,19 @@ public class Grid {
 				this.grid[i][j] = new Block(i, j);	//initialize block at i row and j column to i and j coordinates
 	}
 	
-	public void set_control_block() {
-		this.control = this.grid[CONTROL_ROW_COORDS][CONTROL_COLUMN_COORDS];
-		//this.control = this.grid[18][8];
+	public void set_control_block() { //set control block at the top of the grid
+		this.control = this.grid[CONTROL_ROW_COORDS][CONTROL_COLUMN_COORDS];	//
 		this.control.set_block();
 		this.control.set_shape_type();
 		this.control.set_childOf(this.control);
 		map_shape();
 	}
 	
-	private void map_shape() {
-		for(int i = 0; i < 3; i++) {
-			int row_subblock;
+	private void map_shape() {	//maps the current control block and orbiting blocks in the grid
+		for(int i = 0; i < 3; i++) {	//for each orbiting block in control
+			int row_subblock;		//declare variables for row and column sub-block coordinates 
 			int column_subblock;
-			switch(this.control.get_shape_type()) {
+			switch(this.control.get_shape_type()) {	//
 			case(1):
 				row_subblock = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][0];
 				column_subblock = this.control.get_column_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][1];
