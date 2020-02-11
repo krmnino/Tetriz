@@ -85,18 +85,19 @@ public class Grid {
 		}
 	}
 	
-	private void unmap_shape() {
-		for(int i = 0; i < 3; i++) {
-			int row_subblock;
-			int column_subblock;
-			switch(this.control.get_shape_type()) {
-			case(1):
+	private void unmap_shape() {	//unmaps the current control block and orbiting sub-blocks in the grid
+		for(int i = 0; i < 3; i++) {	//for each orbiting block in control
+			int row_subblock;	//declare variables for row and column sub-block coordinates 
+			int column_subblock;	
+			switch(this.control.get_shape_type()) {	//switch case based on control's shape type
+			case(1):	//if shape is a line, then all orbiting blocks are orthogonal to the control block
 				row_subblock = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][0];
 				column_subblock = this.control.get_column_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][1];
-				if(i < 2) {
+				//calculate the orbiting sub-blocks with their respective coordinate offsets
+				if(i < 2) {	//if current block is less than 2, then clear sub-block at the calculated row and column coordinates
 					this.grid[row_subblock][column_subblock].clear_block();
 				}
-				else {
+				else {	//if i is 2 or greater, then clear sub-block with an additional offset to make the line 4 blocks long
 					if(this.control.get_orientation() == 0) 
 						this.grid[row_subblock + 1][column_subblock].clear_block();
 					else if(this.control.get_orientation() == 1)
@@ -107,32 +108,39 @@ public class Grid {
 						this.grid[row_subblock][column_subblock + 1].clear_block();
 				}
 				break;
-			case(5):
+			case(5):	//if shape is a T, then all orbiting sub-blocks have orthogonal coordinates 
 				row_subblock = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][0];
 				column_subblock = this.control.get_column_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][1];
+				//calculate the orbiting sub-blocks with their respective coordinate offsets
 				this.grid[row_subblock][column_subblock].clear_block();
+				//the the i'th sub-block using the coordinates calculated previously
 				break;
-			default:
-				if(i < 2) {
+			default:	//in this case, the shape contains at least 1 block that uses diagonal coordinates (L, S, and Z shapes)
+				if(i < 2) {	//all blocks at i < 2 use orthogonal coordinates
 					row_subblock = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][0];
 					column_subblock = this.control.get_column_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][1];
+					//calculate the orbiting sub-blocks with their respective coordinate offsets
 					this.grid[row_subblock][column_subblock].clear_block();
+					//the the i'th sub-block using the coordinates calculated previously
 				}
 				else {
 					row_subblock = this.control.get_row_coords() + this.DIAGONAL_COORDINATES[this.control.get_index(i)][0];
 					column_subblock = this.control.get_column_coords() + this.DIAGONAL_COORDINATES[this.control.get_index(i)][1];
+					//calculate the orbiting sub-blocks with their respective coordinate offsets
 					this.grid[row_subblock][column_subblock].clear_block();
+					//the the i'th sub-block using the coordinates calculated previously
 				}
 			}
 		}
 	}
 
-	private void shift_control_block(int row_offset, int column_offset) {
+	private void shift_control_block(int row_offset, int column_offset) {	//shift control block by a given row/column offset
 		Block new_control = this.grid[this.control.get_row_coords() + row_offset][this.control.get_column_coords() + column_offset];
-		new_control.copy_data(this.control);
-		this.control.clear_block();
-		this.control = new_control;
-		this.control.set_childOf(this.control);
+		//create instance of block object with the same coordinates plus the desired offset
+		new_control.copy_data(this.control);	//copy data from control block to new control
+		this.control.clear_block();	//clear current control block from grid
+		this.control = new_control;	//set new control to be the new control block in grid
+		this.control.set_childOf(this.control);	//set new control childOf to be its own child
 	}
 	
 	private boolean rotate_check_collisions() {
