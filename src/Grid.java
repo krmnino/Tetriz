@@ -123,7 +123,7 @@ public class Grid {
 					this.grid[row_subblock][column_subblock].clear_block();
 					//the the i'th sub-block using the coordinates calculated previously
 				}
-				else {
+				else { //all blocks at i > 2 use diagonal coordinates
 					row_subblock = this.control.get_row_coords() + this.DIAGONAL_COORDINATES[this.control.get_index(i)][0];
 					column_subblock = this.control.get_column_coords() + this.DIAGONAL_COORDINATES[this.control.get_index(i)][1];
 					//calculate the orbiting sub-blocks with their respective coordinate offsets
@@ -143,149 +143,192 @@ public class Grid {
 		this.control.set_childOf(this.control);	//set new control childOf to be its own child
 	}
 	
-	private boolean rotate_check_collisions() {
-		Block copy_control = new Block(this.control);
-		int[][] coords = new int[4][2];
-		if(copy_control.get_shape_type() == 1) {
-			boolean limiting_border = false;
+	private boolean rotate_check_collisions() { //check for collisions before rotating and returns a boolean
+		Block copy_control = new Block(this.control); //make a copy of control block
+		int[][] coords = new int[4][2]; //create 2D array that contains new coordinates simulating rotation 
+		if(copy_control.get_shape_type() == 1) { //if control block shape is line
+			boolean limiting_border = false; //variable that determines if shape is limiting border in grid
 			if(copy_control.get_column_coords() == 0 && copy_control.get_orientation() == 0) {
+				//if line shape is in left-most column and orientation is 0
 				copy_control.set_column_coords(copy_control.get_column_coords() + 2);
 				limiting_border = true;
+				//displace copy control block 2 columns to the right and set limiting_border to true
 			}
 			else if(copy_control.get_column_coords() == 0 && copy_control.get_orientation() == 2) {
+				//if line shape is in left-most column and orientation is 2
 				copy_control.set_column_coords(copy_control.get_column_coords() + 1);
 				limiting_border = true;
+				//displace copy control block 1 columns to the right and set limiting_border to true
 			}
-			
 			else if(copy_control.get_column_coords() == this.COLUMNS - 1 && copy_control.get_orientation() == 0) {
+				//if line shape is in right-most column and orientation is 0
 				copy_control.set_column_coords(copy_control.get_column_coords() - 1);
 				limiting_border = true;
+				//displace copy control block 1 columns to the left and set limiting_border to true
 			}
 			else if(copy_control.get_column_coords() == this.COLUMNS - 1 && copy_control.get_orientation() == 2) {
+				//if line shape is in right-most column and orientation is 2
 				copy_control.set_column_coords(copy_control.get_column_coords() - 2);
 				limiting_border = true;
+				//displace copy control block 2 columns to the left and set limiting_border to true
 			}
 			else if(copy_control.get_row_coords() == this.ROWS - 1 && copy_control.get_orientation() == 3) {
+				//if line shape is in bottom row and orientation is 3
 				copy_control.set_row_coords(copy_control.get_row_coords() - 2);
 				limiting_border = true;
+				//displace copy control block 2 rows upwards and set limiting_border to true
 			}
 			else if(copy_control.get_row_coords() == this.ROWS - 1 && copy_control.get_orientation() == 1) {
+				//if line shape is in bottom row and orientation is 1
 				copy_control.set_row_coords(copy_control.get_row_coords() - 1);
 				limiting_border = true;
+				//displace copy control block 1 row upwards and set limiting_border to true
 			}
 			else if(this.grid[copy_control.get_row_coords()][copy_control.get_column_coords() - 1].get_isSet() 
-					&& copy_control.get_orientation() == 0) { //check if next block is set
+					&& copy_control.get_orientation() == 0) { 
+				//if block to the left of control block is set and orientation is 0
 				copy_control.set_column_coords(copy_control.get_column_coords() + 2);
 				limiting_border = true;
+				//displace copy control block 2 columns to the right and set limiting_border to true
 			}
 			else if(this.grid[copy_control.get_row_coords()][copy_control.get_column_coords() - 1].get_isSet() 
 					&& copy_control.get_orientation() == 2) {
+				//if block to the left of control block is set and orientation is 2
 				copy_control.set_column_coords(copy_control.get_column_coords() + 1);
 				limiting_border = true;
+				//displace copy control block 1 column to the right and set limiting_border to true
 			}
 			else if(this.grid[copy_control.get_row_coords()][copy_control.get_column_coords() + 1].get_isSet() 
 					&& copy_control.get_orientation() == 0) {
+				//if block to the right of control block is set and orientation is 0
 				copy_control.set_column_coords(copy_control.get_column_coords() - 1);
 				limiting_border = true;
+				//displace copy control block 1 column to the left and set limiting_border to true
 			}
-			else if(this.grid[copy_control.get_row_coords()][copy_control.get_column_coords() - 1].get_isSet() 
+			else if(this.grid[copy_control.get_row_coords()][copy_control.get_column_coords() + 1].get_isSet() 
 					&& copy_control.get_orientation() == 2) {
+				//if block to the right of control block is set and orientation is 2
 				copy_control.set_column_coords(copy_control.get_column_coords() - 2);
 				limiting_border = true;
+				//displace copy control block 2 columns to the left and set limiting_border to true
 			}
 			else if(this.grid[copy_control.get_row_coords() + 1][copy_control.get_column_coords()].get_isSet() 
 					&& copy_control.get_orientation() == 3) {
+				//if block below of control block is set and orientation is 3
 				copy_control.set_row_coords(copy_control.get_row_coords() - 2);
 				limiting_border = true;
+				//displace copy control block 2 rows upwards and set limiting_border to true
 			}
 			else if(this.grid[copy_control.get_row_coords() + 1][copy_control.get_column_coords()].get_isSet() 
 					&& copy_control.get_orientation() == 1) {
+				//if block below of control block is set and orientation is 1
 				copy_control.set_row_coords(copy_control.get_row_coords() - 1);
 				limiting_border = true;
+				//displace copy control block 1 row upwards and set limiting_border to true
 			}
-			if(!limiting_border) {
-				switch(control.get_orientation()) {
-				case(0):
-					copy_control.set_column_coords(copy_control.get_column_coords() + 1);
+			if(!limiting_border) { //if limiting border remains false
+				switch(control.get_orientation()) { //switch through contol's orientation
+				case(0): //if orientation is 0 
+					copy_control.set_column_coords(copy_control.get_column_coords() + 1); //move copy control 1 column to the right
 					break;
-				case(1):
-					copy_control.set_row_coords(copy_control.get_row_coords() + 1);
+				case(1): //if orientation is 1
+					copy_control.set_row_coords(copy_control.get_row_coords() + 1); //move copy control 1 row downwards
 					break;
-				case(2):
-					copy_control.set_column_coords(copy_control.get_column_coords() - 1);
+				case(2): //if orientation is 2
+					copy_control.set_column_coords(copy_control.get_column_coords() - 1); //move copy control 1 column to the left
 					break;
-				case(3):
-					copy_control.set_row_coords(copy_control.get_row_coords() - 1);
+				case(3): //if orientation is 3
+					copy_control.set_row_coords(copy_control.get_row_coords() - 1); //move copy control 1 row to the upwards
 					break;
 				default:
 					break;
 				}
 			}
-			copy_control.rotate_block();
+			copy_control.rotate_block(); //rotate copy control block (change in coordinates)
 			coords[0][0] = copy_control.get_row_coords() + this.ORTHOGONAL_COORDINATES[copy_control.get_index(0)][0];
+			//store copy control sub-block 0 row coordinates + orthogonal offset at the specified index of coordinate array of indexes
 			coords[0][1] = copy_control.get_column_coords() + this.ORTHOGONAL_COORDINATES[copy_control.get_index(0)][1];
+			//store copy control sub-block 0 column coordinates + orthogonal offset at the specified index of coordinate array of indexes
 			coords[1][0] = copy_control.get_row_coords() + this.ORTHOGONAL_COORDINATES[copy_control.get_index(1)][0];
+			//store copy control sub-block 1 row coordinates + orthogonal offset at the specified index of coordinate array of indexes
 			coords[1][1] = copy_control.get_column_coords() + this.ORTHOGONAL_COORDINATES[copy_control.get_index(1)][1];
-			if(copy_control.get_orientation() == 0) {
+			//store copy control sub-block 1 column coordinates + orthogonal offset at the specified index of coordinate array of indexes
+			if(copy_control.get_orientation() == 0) { //if line orientation is 0
 				coords[2][0] = copy_control.get_row_coords() + this.ORTHOGONAL_COORDINATES[copy_control.get_index(2)][0] + 1;
+				//store copy control sub-block 2 row coordinates + orthogonal offset at the specified index of coordinate array of indexes + 1
 				coords[2][1] = copy_control.get_column_coords() + this.ORTHOGONAL_COORDINATES[copy_control.get_index(2)][1];
+				//store copy control sub-block 2 column coordinates + orthogonal offset at the specified index of coordinate array of indexes
 			}
-			else if(copy_control.get_orientation() == 1) {
+			else if(copy_control.get_orientation() == 1) { //if line orientation is 1
 				coords[2][0] = copy_control.get_row_coords() + this.ORTHOGONAL_COORDINATES[copy_control.get_index(2)][0];
+				//store copy control sub-block 2 row coordinates + orthogonal offset at the specified index of coordinate array of indexes
 				coords[2][1] = copy_control.get_column_coords() + this.ORTHOGONAL_COORDINATES[copy_control.get_index(2)][1] - 1;
+				//store copy control sub-block 2 column coordinates + orthogonal offset at the specified index of coordinate array of indexes - 1
 			}
-			else if(copy_control.get_orientation() == 2) {
+			else if(copy_control.get_orientation() == 2) { //if line orientation is 2
 				coords[2][0] = copy_control.get_row_coords() + this.ORTHOGONAL_COORDINATES[copy_control.get_index(2)][0] - 1;
+				//store copy control sub-block 2 row coordinates + orthogonal offset at the specified index of coordinate array of indexes - 1
 				coords[2][1] = copy_control.get_column_coords() + this.ORTHOGONAL_COORDINATES[copy_control.get_index(2)][1];
+				//store copy control sub-block 2 column coordinates + orthogonal offset at the specified index of coordinate array of indexes
 			}
-			else {
+			else { //if line orientation is 3
 				coords[2][0] = copy_control.get_row_coords() + this.ORTHOGONAL_COORDINATES[copy_control.get_index(2)][0];
+				//store copy control sub-block 2 row coordinates + orthogonal offset at the specified index of coordinate array of indexes
 				coords[2][1] = copy_control.get_column_coords() + this.ORTHOGONAL_COORDINATES[copy_control.get_index(2)][1] + 1;
+				//store copy control sub-block 2 column coordinates + orthogonal offset at the specified index of coordinate array of indexes + 1
 			}
+			//third block is just the control block, store row and column coordinates
 			coords[3][0] = copy_control.get_row_coords();
 			coords[3][1] = copy_control.get_column_coords();
 			
 		}
-		else if(copy_control.get_shape_type() != 2) {
-			if(copy_control.get_column_coords() == 0) 
-				copy_control.set_column_coords(copy_control.get_column_coords() + 1);
-			else if(copy_control.get_column_coords() == this.COLUMNS - 1) 
-				copy_control.set_column_coords(copy_control.get_column_coords() - 1);
-			else if(copy_control.get_row_coords() == this.ROWS - 1) 
-				copy_control.set_row_coords(copy_control.get_row_coords() - 1);
-			copy_control.rotate_block();
-			if(copy_control.get_shape_type() == 5) {
-				for(int i = 0; i < 3; i++) {
+		else if(copy_control.get_shape_type() != 2) { //if shape is any other shape (not line or square shape)
+			if(copy_control.get_column_coords() == 0) //if copy control is in left most column
+				copy_control.set_column_coords(copy_control.get_column_coords() + 1); //displace copy control 1 column to the right
+			else if(copy_control.get_column_coords() == this.COLUMNS - 1) //if copy control is to the right most column
+				copy_control.set_column_coords(copy_control.get_column_coords() - 1); //displace copy control 1 column to the left
+			else if(copy_control.get_row_coords() == this.ROWS - 1) //if copy control is at the bottom of the grid
+				copy_control.set_row_coords(copy_control.get_row_coords() - 1); //displace copy control 1 row upwards
+			copy_control.rotate_block(); //rotate copy control block (change in coordinates)
+			if(copy_control.get_shape_type() == 5) { //if shape is T-shape
+				for(int i = 0; i < 3; i++) { //iterate through all blocks (except copy control block)
 					coords[i][0] = copy_control.get_row_coords() + this.ORTHOGONAL_COORDINATES[copy_control.get_index(i)][0];
+					//store copy control sub-block i row coordinates + orthogonal offset at the specified index of coordinate array of indexes
 					coords[i][1] = copy_control.get_column_coords() + this.ORTHOGONAL_COORDINATES[copy_control.get_index(i)][1];
+					//store copy control sub-block i column coordinates + orthogonal offset at the specified index of coordinate array of indexes
 				}
 				coords[3][0] = copy_control.get_row_coords();
 				coords[3][1] = copy_control.get_column_coords();
 			}
-			else {
-				for(int i = 0; i < 3; i++) {
-					if(i < 2) {
+			else { //if shape is any other shape (not line, square, or T-shape)
+				for(int i = 0; i < 3; i++) { //iterate through all blocks (except copy control block)
+					if(i < 2) { //if i is less than 2
 						coords[i][0] = copy_control.get_row_coords() + this.ORTHOGONAL_COORDINATES[copy_control.get_index(i)][0];
+						//store copy control sub-block i row coordinates + orthogonal offset at the specified index of coordinate array of indexes
 						coords[i][1] = copy_control.get_column_coords() + this.ORTHOGONAL_COORDINATES[copy_control.get_index(i)][1];
+						//store copy control sub-block i column coordinates + orthogonal offset at the specified index of coordinate array of indexes
 					}
-					else {
+					else { //is i is 2
 						coords[i][0] = copy_control.get_row_coords() + this.DIAGONAL_COORDINATES[copy_control.get_index(i)][0];
+						//store copy control sub-block 2 row coordinates + diagonal offset at the specified index of coordinate array of indexes
 						coords[i][1] = copy_control.get_column_coords() + this.DIAGONAL_COORDINATES[copy_control.get_index(i)][1];
+						//store copy control sub-block 2 column coordinates + diagonal offset at the specified index of coordinate array of indexes
 					}
 				}
+				//third block is just the control block, store row and column coordinates
 				coords[3][0] = copy_control.get_row_coords();
 				coords[3][1] = copy_control.get_column_coords();
 			}
 		}
-		for(int i = 0; i < 4; i++) {
-			if(coords[i][0] < 0 || coords[i][0] >= this.ROWS)
-				return true;
-			if(coords[i][1] < 0 || coords[i][1] >= this.COLUMNS)
-				return true;
+		for(int i = 0; i < 4; i++) { //iterate through all coordinates in the array
+			if(coords[i][0] < 0 || coords[i][0] >= this.ROWS) //if i-th block row coordinates are less than 0 or greater than number of rows...
+				return true; //there is a collision
+			if(coords[i][1] < 0 || coords[i][1] >= this.COLUMNS) //if i-th block column coordinates are less than 0 or greater than number of columns...
+				return true; //there is a collision
 			if(this.grid[coords[i][0]][coords[i][1]].get_isSet() && this.grid[coords[i][0]][coords[i][1]].get_childOf() != this.control)
-				return true;
+				return true; //there is a collision
 		}
-		return false;
+		return false; //else, there is no collision and return false
 	}
 	
 	public void rotate_shape() {
