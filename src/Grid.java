@@ -331,98 +331,121 @@ public class Grid {
 		return false; //else, there is no collision and return false
 	}
 	
-	public void rotate_shape() {
-		if(!rotate_check_collisions()) {
-			if(this.control.get_shape_type() == 1) {
-				unmap_shape();
-				boolean limiting_border = false;
+	public void rotate_shape() { //function that checks for collision. If none, then perform rotation in control block
+		if(!rotate_check_collisions()) { //if no collisions, then check for shape of control block 
+			if(this.control.get_shape_type() == 1) { //if control block shape is a line
+				unmap_shape(); //clear control block and its sub-blocks from grid
+				boolean limiting_border = false; //variable that determines if shape is limiting border in grid
 				if(this.control.get_column_coords() == 0 && this.control.get_orientation() == 0) {
+					//if line shape is in left-most column and orientation is 0
 					shift_control_block(0, 2);
 					limiting_border = true;
+					//displace control block 2 columns to the right and set limiting_border to true
 				}
 				else if(this.control.get_column_coords() == 0 && this.control.get_orientation() == 2) {
+					//if line shape is in left-most column and orientation is 2
 					shift_control_block(0, 1);
 					limiting_border = true;
+					//displace control block 1 columns to the right and set limiting_border to true
 				}
 				
 				else if(this.control.get_column_coords() == this.COLUMNS - 1 && this.control.get_orientation() == 0) {
+					//if line shape is in right-most column and orientation is 0
 					shift_control_block(0, -1);
 					limiting_border = true;
+					//displace control block 1 columns to the left and set limiting_border to true
 				}
 				else if(this.control.get_column_coords() == this.COLUMNS - 1 && this.control.get_orientation() == 2) {
+					//if line shape is in right-most column and orientation is 2
 					shift_control_block(0, -2);
 					limiting_border = true;
+					//displace control block 2 columns to the left and set limiting_border to true
 				}
-				
 				else if(this.control.get_row_coords() == this.ROWS - 1 && this.control.get_orientation() == 3) {
+					//if line shape is in bottom row and orientation is 3
 					shift_control_block(-2, 0);
 					limiting_border = true;
+					//displace control block 2 rows upwards and set limiting_border to true
 				}
 				else if(this.control.get_row_coords() == this.ROWS - 1 && this.control.get_orientation() == 1) {
+					//if line shape is in bottom row and orientation is 1
 					shift_control_block(-1, 0);
 					limiting_border = true;
+					//displace control block 1 row upwards and set limiting_border to true
 				}
 				else if(this.grid[this.control.get_row_coords()][this.control.get_column_coords() - 1].get_isSet() 
-						&& this.control.get_orientation() == 0) { //check if next block is set\
+						&& this.control.get_orientation() == 0) { 
+					//if block to the left of control block is set and orientation is 0
 					shift_control_block(0, 2);
 					limiting_border = true;
+					//displace control block 2 columns to the right and set limiting_border to true
 				}
 				else if(this.grid[this.control.get_row_coords()][this.control.get_column_coords() - 1].get_isSet() 
 						&& this.control.get_orientation() == 2) {
+					//if block to the left of control block is set and orientation is 2
 					shift_control_block(0, 1);
 					limiting_border = true;
+					//displace control block 1 column to the right and set limiting_border to true
 				}
 				else if(this.grid[this.control.get_row_coords()][this.control.get_column_coords() + 1].get_isSet() 
 						&& this.control.get_orientation() == 0) {
+					//if block to the right of control block is set and orientation is 0
 					shift_control_block(0, -1);
 					limiting_border = true;
+					//displace control block 1 column to the left and set limiting_border to true
 				}
-				else if(this.grid[this.control.get_row_coords()][this.control.get_column_coords() - 1].get_isSet() 
+				else if(this.grid[this.control.get_row_coords()][this.control.get_column_coords() + 1].get_isSet()
 						&& this.control.get_orientation() == 2) {
+					//if block to the right of control block is set and orientation is 2
 					shift_control_block(0, -2);
 					limiting_border = true;
+					//displace control block 2 columns to the left and set limiting_border to true
 				}
 				else if(this.grid[this.control.get_row_coords() + 1][this.control.get_column_coords()].get_isSet() 
 						&& this.control.get_orientation() == 3) {
+					//if block below of control block is set and orientation is 3
 					shift_control_block(-2, 0);
 					limiting_border = true;
+					//displace copy control block 2 rows upwards and set limiting_border to true
 				}
 				else if(this.grid[this.control.get_row_coords() + 1][this.control.get_column_coords()].get_isSet() 
 						&& this.control.get_orientation() == 1) {
+					//if block below of control block is set and orientation is 1
 					shift_control_block(-1, 0);
 					limiting_border = true;
+					//displace copy control block 1 row upwards and set limiting_border to true
 				}
-				if(!limiting_border) {
+				if(!limiting_border) { //if limiting border remains false
 					switch(control.get_orientation()) {
-					case(0):
-						shift_control_block(0, 1); 
+					case(0): //if orientation is 0 
+						shift_control_block(0, 1); //move copy control 1 column to the right
 						break;
-					case(1):
-						shift_control_block(1, 0);
+					case(1): //if orientation is 1 
+						shift_control_block(1, 0); //move copy control 1 row downwards
 						break;
-					case(2):
-						shift_control_block(0, -1);
+					case(2): //if orientation is 2 
+						shift_control_block(0, -1); //move copy control 1 column to the left
 						break;
-					case(3):
-						shift_control_block(-1, 0);
+					case(3): //if orientation is 3 
+						shift_control_block(-1, 0); //move copy control 1 row to the upwards
 						break;
 					default:
 						break;
 					}
 				}	
-				this.control.rotate_block();
-				map_shape();
+				this.control.rotate_block(); //rotate control block by increasing its orientation value by 1
+				map_shape(); //map line shape after rotation operation was performed
 			}
-			else if(this.control.get_shape_type() != 2) {
-				unmap_shape();
-				if(this.control.get_column_coords() == 0) 
-					shift_control_block(0, 1);
-				else if(this.control.get_column_coords() == this.COLUMNS - 1) 
-					shift_control_block(0, -1);
-				else if(this.control.get_row_coords() == this.ROWS - 1) 
-					shift_control_block(-1, 0);
-				this.control.rotate_block();
-				map_shape();
+			else if(this.control.get_shape_type() != 2) { //if shape is any other figure other than square shape
+				unmap_shape(); //clear control block and its sub-blocks from grid
+				if(this.control.get_column_coords() == 0) //if control block is at the left-most column
+					shift_control_block(0, 1); //shift control block 1 column to the right
+				else if(this.control.get_column_coords() == this.COLUMNS - 1) //if control block is at the right-most column
+					shift_control_block(0, -1); //shift control block 1 column to the left
+				else if(this.control.get_row_coords() == this.ROWS - 1) //if control block is at the lowest row in the grid 
+					shift_control_block(-1, 0); //shift control block 1 row upwards
+				this.control.rotate_block(); //rotate control block by increasing its orientation value by 1
+				map_shape(); //map line shape after rotation operation was performed
 			}
 		}
 	}
