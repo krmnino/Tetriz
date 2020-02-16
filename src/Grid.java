@@ -450,187 +450,214 @@ public class Grid {
 		}
 	}
 	
-	private boolean move_check_collisions(int row_offset, int column_offset) {
-		int[][] coords = new int[4][2];
-		if(this.control.get_shape_type() == 1) {
+	private boolean move_check_collisions(int row_offset, int column_offset) { //function that checks if there is a collision when shape moves
+		int[][] coords = new int[4][2]; //declare array that contains row and column coordinates of all 4 blocks in a shape
+		if(this.control.get_shape_type() == 1) { //if control block shape is line
 			coords[0][0] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(0)][0] + row_offset;
+			//store control sub-block 0 row coordinates + orthogonal offset at the specified index of coordinate array of indexes
 			coords[0][1] = this.control.get_column_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(0)][1] + column_offset;
+			//store control sub-block 0 column coordinates + orthogonal offset at the specified index of coordinate array of indexes
 			coords[1][0] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(1)][0] + row_offset;
+			//store control sub-block 1 row coordinates + orthogonal offset at the specified index of coordinate array of indexes
 			coords[1][1] = this.control.get_column_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(1)][1] + column_offset;
-			if(this.control.get_orientation() == 0) {
+			//store control sub-block 1 column coordinates + orthogonal offset at the specified index of coordinate array of indexes
+			if(this.control.get_orientation() == 0) { //if line orientation is 0
 				coords[2][0] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(2)][0] + row_offset + 1;
+				//store control sub-block 2 row coordinates + orthogonal offset at the specified index of coordinate array of indexes + 1
 				coords[2][1] = this.control.get_column_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(2)][1] + column_offset;
+				//store control sub-block 2 column coordinates + orthogonal offset at the specified index of coordinate array of indexes
 			}
-			else if(this.control.get_orientation() == 1) {
+			else if(this.control.get_orientation() == 1) { //if line orientation is 1
 				coords[2][0] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(2)][0] + row_offset;
+				//store control sub-block 2 row coordinates + orthogonal offset at the specified index of coordinate array of indexes
 				coords[2][1] = this.control.get_column_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(2)][1] + column_offset - 1;
+				//store control sub-block 2 column coordinates + orthogonal offset at the specified index of coordinate array of indexes - 1
 			}
-			else if(this.control.get_orientation() == 2) {
+			else if(this.control.get_orientation() == 2) { //if line orientation is 2
 				coords[2][0] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(2)][0] + row_offset - 1;
+				//store control sub-block 2 row coordinates + orthogonal offset at the specified index of coordinate array of indexes - 1
 				coords[2][1] = this.control.get_column_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(2)][1] + column_offset;
+				//store control sub-block 2 column coordinates + orthogonal offset at the specified index of coordinate array of indexes
 			}
-			else {
+			else { //if line orientation is 3
 				coords[2][0] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(2)][0] + row_offset;
+				//store control sub-block 2 row coordinates + orthogonal offset at the specified index of coordinate array of indexes
 				coords[2][1] = this.control.get_column_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(2)][1] + column_offset + 1;
+				//store control sub-block 2 column coordinates + orthogonal offset at the specified index of coordinate array of indexes + 1
 			}
+			//third block is just the control block, store row and column coordinates
 			coords[3][0] = this.control.get_row_coords() + row_offset;
 			coords[3][1] = this.control.get_column_coords() + column_offset;
 		}
-		else if(this.control.get_shape_type() == 5) {
-			for(int i = 0; i < 3; i++) {
+		else if(this.control.get_shape_type() == 5) { //if control block is T shape
+			for(int i = 0; i < 3; i++) { //iterate through all sub-blocks adding the offsets using orthogonal coordinates
 				coords[i][0] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][0] + row_offset;
 				coords[i][1] = this.control.get_column_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][1] + column_offset;
 			}
 			coords[3][0] = this.control.get_row_coords() + row_offset;
 			coords[3][1] = this.control.get_column_coords() + column_offset;
+			//add offset to control block
 		}
-		else {
-			for(int i = 0; i < 3; i++) {
-				if(i < 2) {
+		else { //if control block is any other shape
+			for(int i = 0; i < 3; i++) { //iterate through all sub-blocks 
+				if(i < 2) { //if i < 2, then add the offsets using orthogonal coordinates
 					coords[i][0] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][0] + row_offset;
 					coords[i][1] = this.control.get_column_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][1] + column_offset;
 				}
-				else {
+				else { //if i is 2, then add the offsets using diagonal coordinates
 					coords[i][0] = this.control.get_row_coords() + this.DIAGONAL_COORDINATES[this.control.get_index(i)][0] + row_offset;
 					coords[i][1] = this.control.get_column_coords() + this.DIAGONAL_COORDINATES[this.control.get_index(i)][1] + column_offset;
 				}
 			}
 			coords[3][0] = this.control.get_row_coords() + row_offset;
 			coords[3][1] = this.control.get_column_coords() + column_offset;
+			//add offset to control block
 		}
-		for(int i = 0; i < 4; i++) {
-			if(coords[i][0] < 0 || coords[i][0] >= this.ROWS)
-				return true;
+		for(int i = 0; i < 4; i++) { //iterate through all coordinates in array
+			if(coords[i][0] < 0 || coords[i][0] >= this.ROWS) 
+				//if current row coordinates are less than 0 or greater than number of rows in grid
+				return true; //there is a collision and return true
 			if(coords[i][1] < 0 || coords[i][1] >= this.COLUMNS)
-				return true;
+				//if current column coordinates are less than 0 or greater than number of columns in grid
+				return true; //there is a collision and return true
 			if(this.grid[coords[i][0]][coords[i][1]].get_isSet() && this.grid[coords[i][0]][coords[i][1]].get_childOf() != this.control)
-				return true;
+				//if block at the given coordinates is set and that block is not child of control block
+				return true; //there is a collision and return true
 		}
-		return false;
+		return false; //else, there is no collisions and return false
 	}
 	
-	public boolean move_shape_down() {
-		if(!move_check_collisions(1, 0)) {
-			unmap_shape();
-			shift_control_block(1, 0);
-			map_shape();
-			return true;
+	public boolean move_shape_down() { //function that moves shape down by one block
+		if(!move_check_collisions(1, 0)) { //if there is no collisions moving the block 1 block down
+			unmap_shape(); //unmap shape from grid
+			shift_control_block(1, 0); //actually move the shape 1 block down
+			map_shape(); //remap the shape in grid
+			return true; //return true telling the caller that the shape successfully moved 1 block down
 		}
 		else
-			return false;
+			return false; //if move_check_collisions() returns false, then return false to the caller 
 	}
 
-	public void move_shape_left() {
-		if(!move_check_collisions(0, -1)) {
-			unmap_shape();
-			shift_control_block(0, -1);
-			map_shape();
+	public void move_shape_left() { //function that moves shape left by one block
+		if(!move_check_collisions(0, -1)) { //if there is no collisions moving the block 1 block to the left
+			unmap_shape(); //unmap shape from grid
+			shift_control_block(0, -1); //actually move the shape 1 block to the left
+			map_shape(); //remap the shape in grid
 		}	
 	}
 	
-	public void move_shape_right() {
-		if(!move_check_collisions(0, 1)) {
-			unmap_shape();
-			shift_control_block(0, 1);
-			map_shape();
+	public void move_shape_right() { //function that moves shape right by one block
+		if(!move_check_collisions(0, 1)) { //if there is no collisions moving the block 1 block to the right
+			unmap_shape(); //unmap shape from grid
+			shift_control_block(0, 1); //actually move the shape 1 block to the right
+			map_shape(); //remap the shape in grid
 		}
 	}
 	
 	public void send_shape_down() {
-		int row_offset = 0;
-		while(true) {
-			if(!move_check_collisions(row_offset, 0)) 
-				row_offset++;
+		int row_offset = 0; //accumulator that counts how many row can the shape move downwards
+		while(true) { //while there is no collisions...
+			if(!move_check_collisions(row_offset, 0)) //check collisions at row_offset number of rows
+				row_offset++; //increase accumulator by 1
 			else 
-				break;
+				break; //if there is a collision, break the while loop
 		}
-		unmap_shape();
-		shift_control_block(row_offset - 1, 0);
-		map_shape();
+		unmap_shape(); //unmap shape from grid
+		shift_control_block(row_offset - 1, 0); //shift control block by the row offset value minus 1
+		map_shape(); //remap the shape in grid
 	}
 	
-	private void shift_rows_down(int row) {
-		for(int i = row; i > 0; i--) {
-			for(int j = 0; j < 11; j++) {
-				this.grid[i][j].clear_block();
-				this.grid[i][j].copy_data(this.grid[i - 1][j]);
-				this.grid[i - 1][j].clear_block();
+	private void shift_rows_down(int row) { //shift all rows above a specific row down
+		for(int i = row; i > 0; i--) { //from row to the top of the grid...
+			for(int j = 0; j < this.COLUMNS; j++) { //iterate through each block in a row
+				this.grid[i][j].clear_block(); //clear each block in row
+				this.grid[i][j].copy_data(this.grid[i - 1][j]); //copy the blocks from the row above
 			}
 		}
 	}
 	
-	private boolean is_line_complete(int row) {
-		for(int i = 0; i < this.COLUMNS; i++) {
-			if(!this.grid[row][i].get_isSet())
-				return false;
+	private boolean is_line_complete(int row) { //function that checks if a given row is complete
+		for(int i = 0; i < this.COLUMNS; i++) { //iterate through all blocks in a specified row
+			if(!this.grid[row][i].get_isSet()) //if block in row is not set
+				return false; //then line is not complete and return false
 		}
-		return true;
+		return true; //if for loop cycles through the entire row, then the row is complete
 	}
 	
-	public void check_completed_lines() {
-		int[] row_coords = new int[4];
-		for(int i = 0; i < row_coords.length; i++)
+	public void check_completed_lines() { //check completed rows in grid
+		int[] row_coords = new int[4]; //declare array to contain row coordinates of all 4 blocks in a shape
+		for(int i = 0; i < row_coords.length; i++) //initialize all coordinate values in array to -1
 			row_coords[i] = -1;
-		if(this.control.get_shape_type() == 1) {
+		if(this.control.get_shape_type() == 1) { //if control block shape is a line
 			row_coords[0] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(0)][0];
 			row_coords[1] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(1)][0];
-			if(this.control.get_orientation() == 0) 
+			//obtain and store in array row coordinates of 2 adjacent sub-blocks to the control block 
+			if(this.control.get_orientation() == 0) //if control block orientation is 0
 				row_coords[2] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(2)][0] + 1;
-			else if(this.control.get_orientation() == 1) 
+				//row coordinates for the 3rd sub-block must have and offset of + 1
+			else if(this.control.get_orientation() == 1) //if control block orientation is 1 
 				row_coords[2] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(2)][0];
-			else if(this.control.get_orientation() == 2) 
+				//row coordinates for the 3rd sub-block should not have an offset
+			else if(this.control.get_orientation() == 2) //if control block orientation is 2
 				row_coords[2] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(2)][0] - 1;
-			else 
+				//row coordinates for the 3rd sub-block must have and offset of - 1
+			else //if control block orientation is 3
 				row_coords[2] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(2)][0];
+				//row coordinates for the 3rd sub-block should not have an offset
 			row_coords[3] = this.control.get_row_coords();
+			//add row coordinates of control block to the array
 		}
-		else if(this.control.get_shape_type() == 5) {
-			for(int i = 0; i < 3; i++) 
+		else if(this.control.get_shape_type() == 5) { //if control block shape is a T shape
+			for(int i = 0; i < 3; i++) //iterate through all sub-blocks orbiting control block
 				row_coords[i] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][0];
+				//add row coordinates to array
 			row_coords[3] = this.control.get_row_coords();
+			//add row coordinates of control block to the array
 		}
-		else {
-			for(int i = 0; i < 3; i++) {
-				if(i < 2) 
+		else { //if control block is any other shape
+			for(int i = 0; i < 3; i++) { //iterate through all sub-blocks orbiting control block
+				if(i < 2) //if i < 2, add row coordinates to array using orthogonal coordinates
 					row_coords[i] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][0];
-				else 
+				else //if i = 2, add row coordinates to array using diagonal coordinates
 					row_coords[i] = this.control.get_row_coords() + this.DIAGONAL_COORDINATES[this.control.get_index(i)][0];
 			}
 			row_coords[3] = this.control.get_row_coords();
+			//add row coordinates of control block to the array
 		}
-		Arrays.sort(row_coords);
-		for(int i = 0; i < row_coords.length; i++) {
-			for(int j = 0; j < row_coords.length; j++) {
-				if(j == i || row_coords[j] == -1)
-					continue;
-				else if(row_coords[i] == row_coords[j])
-					row_coords[j] = -1;
+		Arrays.sort(row_coords); //sort array of coordinates
+		//this nested for-loop set repeated coordinate values to -1
+		for(int i = 0; i < row_coords.length; i++) { //iterate through row coordinate array
+			for(int j = 0; j < row_coords.length; j++) { //second index to iterate through row coordinate array and compare later
+				if(j == i || row_coords[j] == -1) //if both indexes are the same or current value at index j is -1
+					continue; //jump to the next value by increasing index j
+				else if(row_coords[i] == row_coords[j]) //if element at index i equals element at index j
+					row_coords[j] = -1; //set value at index j to -1
 			}
 		}
-		for(int i = 0; i < row_coords.length; i++) {
-			if(row_coords[i] != -1) {
-				if(is_line_complete(row_coords[i])) {
-					shift_rows_down(row_coords[i]);
+		for(int i = 0; i < row_coords.length; i++) { //iterate through array of row coordinates
+			if(row_coords[i] != -1) { //if current value is not -1
+				if(is_line_complete(row_coords[i])) { //check if row at row coordinate is complete
+					shift_rows_down(row_coords[i]); //if return true, then shift rows down
 				}
 			}
 		}
 	}
 	
-	public String toString() {
-		String out = "._._._._._._._._._._._.\n|";
-		for(int i = 0; i < this.ROWS; i++) {
-			for(int j = 0; j < this.COLUMNS; j++) {
-				if(j == this.COLUMNS - 1) {
-					out += this.grid[i][j].display();
-					if(i != this.ROWS - 1)
-						out += "|\n|";
-					else
-						out += "|";
+	public String toString() { //displays grid using ASCII characters
+		String out = "._._._._._._._._._._._.\n|"; //initialize out string with the header of grid
+		for(int i = 0; i < this.ROWS; i++) { //iterate through each row
+			for(int j = 0; j < this.COLUMNS; j++) { //iterate through each block in row
+				if(j == this.COLUMNS - 1) { //if j is at the last column of the grid
+					out += this.grid[i][j].display(); //append block.display() value to out string
+					if(i != this.ROWS - 1) //if i is not at the last row in grid 
+						out += "|\n|"; //append |, add new line, and add another |
+					else //if i is at the last row in grid
+						out += "|"; //just append |
 				}
-				else 
-					out += this.grid[i][j].display() + "|";
+				else //if j is not at the last column in row
+					out += this.grid[i][j].display() + "|"; //append block.display() value and |
 			}
 		}
-		return out;
+		return out; //return out string to the caller
 	}
 }
