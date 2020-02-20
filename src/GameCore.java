@@ -49,7 +49,6 @@ public class GameCore extends JPanel {
 				if(!g.move_shape_down()) {	//if shape could not move
 					g.check_completed_lines();	//check rows that are full
 					if(!g.set_control_block()) {	//set new control block at the top
-						display.setText("GAME OVER");  //if not empty, print GAME OVER on display
 						game_running = false;
 						break;
 					}
@@ -84,7 +83,6 @@ public class GameCore extends JPanel {
 					if(!g.move_shape_down()) {	//if control block could not move down...
 						g.check_completed_lines();	//check if there are any completed rows in grid
 						if(!g.set_control_block()) { //check if spawn area of control block shape is empty
-							display.setText("GAME OVER"); //if not empty, print GAME OVER on display
 							game_running = false;
 							break;
 						}
@@ -121,6 +119,6 @@ public class GameCore extends JPanel {
 	public static void main(String[] args) {
 		set_GUI();	//set up the GUI and its elements
 		game_loop();	//start the game loop
-		display.setText("GAME OVER"); //if not empty, print GAME OVER on display
+		display.setText("GAME OVER"); //when game loop ends, print GAME OVER on display
 	}
 }
