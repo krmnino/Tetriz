@@ -87,15 +87,15 @@ public class Grid {
 	}
 	
 	public boolean set_control_block() { //set control block at the top of the grid
-			this.control = this.grid[CONTROL_ROW_COORDS][CONTROL_COLUMN_COORDS];
-			this.control.set_block();
-			this.control.set_shape_type();
-			this.control.set_childOf(this.control);
-			map_shape();
-			if(!check_control_spawn_collisions()) {
-				return true;
+			this.control = this.grid[CONTROL_ROW_COORDS][CONTROL_COLUMN_COORDS]; //this.control to be block in grid at CRC and CCC
+			this.control.set_shape_type(); //set shape type for control shape
+			this.control.set_childOf(this.control); //make control block be child of itself
+			if(!check_control_spawn_collisions()) { //if there is no collisions when spawning a shape
+				this.control.set_block(); //set control block in grid
+				map_shape(); //map shape in grid
+				return true; //return true
 			}
-			return false; //TODO: check for collisions when spawning new shape
+			return false; //if check_control_spawn_collisions() returns true, then return false (could not spawn block)
 	}
 	
 	private void map_shape() {	//maps the current control block and orbiting sub-blocks in the grid

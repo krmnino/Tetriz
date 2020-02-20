@@ -12,10 +12,10 @@ public class GameCore extends JPanel {
 	
 	private static JTextArea display;	//Creates text area where the grid is displayed
 	private static Grid g = new Grid();	//Creates new grid of blocks object
-	static boolean game_running = true;
+	private static boolean game_running = true;
+	private static int score = 0;
 	
 	public GameCore() {
-		
 		KeyboardDectection listener = new KeyboardDectection(); //Initialize keyboard detection object
 		addKeyListener(listener);	//Add key listener to Key detection object
 		setFocusable(true);	//Sets focusable to true and overrides original default state
@@ -62,7 +62,6 @@ public class GameCore extends JPanel {
 	}
 	
 	class KeyboardDectection implements KeyListener {
-		
 		public void keyTyped(KeyEvent e) {}	//mandatory keyReleased fn() due to abstract class
 		
 		public void keyPressed(KeyEvent e) {
