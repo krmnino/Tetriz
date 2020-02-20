@@ -27,13 +27,75 @@ public class Grid {
 			for(int j = 0; j < COLUMNS; j++)
 				this.grid[i][j] = new Block(i, j);	//initialize block at i row and j column to i and j coordinates
 	}
+		
+	private boolean check_control_spawn_collisions() {
+		int[][] coords = new int[4][2]; //declare array that contains row and column coordinates of all 4 blocks in a shape
+		if(this.control.get_shape_type() == 1) { //if control block shape is line
+			coords[0][0] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(0)][0];
+			//store control sub-block 0 row coordinates + orthogonal offset at the specified index of coordinate array of indexes
+			coords[0][1] = this.control.get_column_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(0)][1];
+			//store control sub-block 0 column coordinates + orthogonal offset at the specified index of coordinate array of indexes
+			coords[1][0] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(1)][0];
+			//store control sub-block 1 row coordinates + orthogonal offset at the specified index of coordinate array of indexes
+			coords[1][1] = this.control.get_column_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(1)][1];
+			//store control sub-block 1 column coordinates + orthogonal offset at the specified index of coordinate array of indexes
+			coords[2][0] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(2)][0] + 1;
+			//store control sub-block 2 row coordinates + orthogonal offset at the specified index of coordinate array of indexes + 1
+			coords[2][1] = this.control.get_column_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(2)][1];
+			//store control sub-block 2 column coordinates + orthogonal offset at the specified index of coordinate array of indexes
+			coords[3][0] = this.control.get_row_coords();
+			//third block is just the control block, store row coordinates
+			coords[3][1] = this.control.get_column_coords();
+			//third block is just the control block, store column coordinates
+		}
+		else if(this.control.get_shape_type() == 5) { //if control block is T shape
+			for(int i = 0; i < 3; i++) { //iterate through all sub-blocks adding the offsets using orthogonal coordinates
+				coords[i][0] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][0];
+				coords[i][1] = this.control.get_column_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][1];
+			}
+			coords[3][0] = this.control.get_row_coords();
+			coords[3][1] = this.control.get_column_coords();
+			//add offset to control block
+		}
+		else { //if control block is any other shape
+			for(int i = 0; i < 3; i++) { //iterate through all sub-blocks 
+				if(i < 2) { //if i < 2, then add the offsets using orthogonal coordinates
+					coords[i][0] = this.control.get_row_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][0];
+					coords[i][1] = this.control.get_column_coords() + this.ORTHOGONAL_COORDINATES[this.control.get_index(i)][1];
+				}
+				else { //if i is 2, then add the offsets using diagonal coordinates
+					coords[i][0] = this.control.get_row_coords() + this.DIAGONAL_COORDINATES[this.control.get_index(i)][0];
+					coords[i][1] = this.control.get_column_coords() + this.DIAGONAL_COORDINATES[this.control.get_index(i)][1];
+				}
+			}
+			coords[3][0] = this.control.get_row_coords();
+			coords[3][1] = this.control.get_column_coords();
+			//add offset to control block
+		}
+		for(int i = 0; i < 4; i++) { //iterate through all coordinates in array
+			if(coords[i][0] < 0 || coords[i][0] >= this.ROWS) 
+				//if current row coordinates are less than 0 or greater than number of rows in grid
+				return true; //there is a collision and return true
+			if(coords[i][1] < 0 || coords[i][1] >= this.COLUMNS)
+				//if current column coordinates are less than 0 or greater than number of columns in grid
+				return true; //there is a collision and return true
+			if(this.grid[coords[i][0]][coords[i][1]].get_isSet())
+				//if block at the given coordinates is set and that block is not child of control block
+				return true; //there is a collision and return true
+		}
+		return false; //else, there is no collisions and return false
+	}
 	
-	public void set_control_block() { //set control block at the top of the grid
-		this.control = this.grid[CONTROL_ROW_COORDS][CONTROL_COLUMN_COORDS];	//
-		this.control.set_block();
-		this.control.set_shape_type();
-		this.control.set_childOf(this.control);
-		map_shape();
+	public boolean set_control_block() { //set control block at the top of the grid
+			this.control = this.grid[CONTROL_ROW_COORDS][CONTROL_COLUMN_COORDS];
+			this.control.set_block();
+			this.control.set_shape_type();
+			this.control.set_childOf(this.control);
+			map_shape();
+			if(!check_control_spawn_collisions()) {
+				return true;
+			}
+			return false; //TODO: check for collisions when spawning new shape
 	}
 	
 	private void map_shape() {	//maps the current control block and orbiting sub-blocks in the grid
