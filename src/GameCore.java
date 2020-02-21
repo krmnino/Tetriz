@@ -5,12 +5,14 @@ import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
 
 @SuppressWarnings("serial")
 public class GameCore extends JPanel {
 	
 	private static JTextArea display;	//Creates text area where the grid is displayed
+	private static JLabel current_score;
 	private static Grid g = new Grid();	//Creates new grid of blocks object
 	private static boolean game_running = true;
 	private static int score = 0;
@@ -22,8 +24,6 @@ public class GameCore extends JPanel {
 	}
 	
 	public static void set_GUI() {	//set GUI elements and launch it
-		JFrame frame = new JFrame();	//set frame object that contains the display and other things
-		frame.setLayout(null);	// not set a layout for the frame to allow place objects freely (any coordinates)
 		GameCore key_detector = new GameCore();	// initialize new instance of key detector class
 		display = new JTextArea();	//initialize new JTextArea to be the screen
 		display.setSize(120, 370);	//set size of display in pixels
@@ -31,11 +31,21 @@ public class GameCore extends JPanel {
 		display.setVisible(true);	//make display visible
 		display.setBackground(SystemColor.info);	//set display background color to an arbitrary color that contrasts
 		display.setBorder(new LineBorder(new Color(0, 0, 0)));	//let the display have a black border
+		current_score = new JLabel();
+		current_score.setSize(120, 30);
+		current_score.setLocation(50, 400);
+		current_score.setVisible(true);
+		current_score.setBackground(SystemColor.info);
+		current_score.setBorder(new LineBorder(new Color(0, 0, 0)));
+		current_score.setText("Score: " + Integer.toString(score));
+		JFrame frame = new JFrame();	//set frame object that contains the display and other things
+		frame.setLayout(null);	// not set a layout for the frame to allow place objects freely (any coordinates)
 		frame.add(key_detector); //add key detector object to frame
 		frame.add(display);	//add display to frame
+		frame.add(current_score);
 		frame.setTitle("Tetriz");	//set frame title as "Tetriz"
 		frame.setFocusCycleRoot(true);	//set frame as root of focus traversal cycle
-		frame.setSize(250, 450);	//set frame size
+		frame.setSize(160, 480);	//set frame size
 		frame.setVisible(true);	//set frame visible (display window)
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	//set default close operation (press X to close)
 	}
@@ -47,18 +57,9 @@ public class GameCore extends JPanel {
 			try {
 				Thread.sleep(1000);	//make program sleep for 1 second before sending the next update
 				if(!g.move_shape_down()) {	//if shape could not move
-					switch(g.check_completed_lines()) {	//check rows that are full
-					case(1):
-						break;
-					case(2):
-						break; //TODO
-					case(3):
-						break;
-					case(4):
-						break;
-					default:
-						break;
-					}
+					int lines_completed = g.check_completed_lines(); //variable that saves number of lines completed
+					score += lines_completed * lines_completed * 10; // check if lines are completed and to score variable
+					current_score.setText("Score: " + score);
 					if(!g.set_control_block()) {	//set new control block at the top
 						game_running = false;
 						break;
@@ -92,7 +93,9 @@ public class GameCore extends JPanel {
 				case('S'): //S - move shape down
 				case('s'):
 					if(!g.move_shape_down()) {	//if control block could not move down...
-						g.check_completed_lines();	//check if there are any completed rows in grid
+						int lines_completed = g.check_completed_lines(); //variable that saves number of lines completed
+						score += lines_completed * lines_completed * 10; // check if lines are completed and to score variable
+						current_score.setText("Score: " + score);
 						if(!g.set_control_block()) { //check if spawn area of control block shape is empty
 							game_running = false;
 							break;
@@ -109,9 +112,10 @@ public class GameCore extends JPanel {
 					break;
 				case(' '): //ESPACE - send shape down
 					g.send_shape_down();	//send control block down
-					g.check_completed_lines();	//check if there are any completed rows in grid
+					int lines_completed = g.check_completed_lines(); //variable that saves number of lines completed
+					score += lines_completed * lines_completed * 10; // check if lines are completed and add to score variable
+					current_score.setText("Score: " + score);
 					if(!g.set_control_block()) { //check if spawn area of control block shape is empty
-						
 						game_running = false;
 						break;
 					}
@@ -130,6 +134,6 @@ public class GameCore extends JPanel {
 	public static void main(String[] args) {
 		set_GUI();	//set up the GUI and its elements
 		game_loop();	//start the game loop
-		display.setText("GAME OVER"); //when game loop ends, print GAME OVER on display
+		display.setText("\n\n\n\n\n\n\n\n\n     GAME OVER\n    Final Score: " + score); //when game loop ends, print GAME OVER on display
 	}
 }
