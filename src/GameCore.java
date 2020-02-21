@@ -47,7 +47,18 @@ public class GameCore extends JPanel {
 			try {
 				Thread.sleep(1000);	//make program sleep for 1 second before sending the next update
 				if(!g.move_shape_down()) {	//if shape could not move
-					g.check_completed_lines();	//check rows that are full
+					switch(g.check_completed_lines()) {	//check rows that are full
+					case(1):
+						break;
+					case(2):
+						break; //TODO
+					case(3):
+						break;
+					case(4):
+						break;
+					default:
+						break;
+					}
 					if(!g.set_control_block()) {	//set new control block at the top
 						game_running = false;
 						break;

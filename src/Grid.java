@@ -646,7 +646,8 @@ public class Grid {
 		return true; //if for loop cycles through the entire row, then the row is complete
 	}
 	
-	public void check_completed_lines() { //check completed rows in grid
+	public int check_completed_lines() { //check completed rows in grid
+		int lines_completed = 0; //initialize variable that counts number of lines complete
 		int[] row_coords = new int[4]; //declare array to contain row coordinates of all 4 blocks in a shape
 		for(int i = 0; i < row_coords.length; i++) //initialize all coordinate values in array to -1
 			row_coords[i] = -1;
@@ -699,10 +700,12 @@ public class Grid {
 		for(int i = 0; i < row_coords.length; i++) { //iterate through array of row coordinates
 			if(row_coords[i] != -1) { //if current value is not -1
 				if(is_line_complete(row_coords[i])) { //check if row at row coordinate is complete
+					lines_completed++; //increase counter by 1
 					shift_rows_down(row_coords[i]); //if return true, then shift rows down
 				}
 			}
 		}
+		return lines_completed;
 	}
 	
 	public String toString() { //displays grid using ASCII characters
