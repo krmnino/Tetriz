@@ -9,6 +9,15 @@ public class Block {
 	private int[] indexes = new int[3]; //indexes used to gather the current coordinates of orbiting blocks
 	private Block childOf; //if block is child of a control block or if control block, then child of itself
 	
+	public Block(){ //constructor method, takes coordinates as parameters
+		this.row_coordinates = 1;
+		this.column_coordinates = 1;
+		this.isSet = false; //block is not set by default
+		this.orientation = 0; //block facing north by default
+		this.shape_type = 0; //shape 0 = no shape at all
+		this.indexes = new int[3]; //allocates space for array of indexes
+		this.childOf = null; //new block is child of no block by default
+	}
 	
 	public Block(int row_coordinates_, int column_coordinates_){ //constructor method, takes coordinates as parameters
 		this.row_coordinates = row_coordinates_;

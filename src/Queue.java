@@ -12,11 +12,14 @@ public class Queue {
 	public void populate() {
 		
 	}
-	public void enqueue() {
-		
-	}
-	public Block dequeue() {
+	public Block dequeue_shape() {
 		Block out = this.head.get_data();
+		this.head = this.head.get_next();
+		Block new_tail = new Block();
+		new_tail.set_shape_type();
+		new_tail.set_block();
+		this.tail = new Node(new_tail);
+		return out;
 	}
 	public void swap_first_and_second() {
 		
