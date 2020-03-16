@@ -207,4 +207,8 @@ public class Block {
 		else
 			return "_"; //else, return "_" meaning that this block is free
 	}
+	
+	public String toString() {
+		return "[" + this.shape_type + "]";
+	}
 }

@@ -10,17 +10,17 @@ public class Queue {
 		this.size = 0;
 	}
 	public void populate() {
-		Node curr;
-		this.head = new Node(new Block(1, 1));
-		this.head.get_data().set_shape_type();
-		this.head.get_data().set_block();
+		this.tail = new Node(new Block(1, 1));
+		this.tail.get_data().set_shape_type();
+		this.tail.get_data().set_block();
+		this.head = this.tail;
 		this.size++;
-		curr = this.head.get_next();
 		while(size < MAX_SIZE) {
-			curr = new Node(new Block(1, 1));
-			curr.get_data().set_shape_type();
-			curr.get_data().set_block();
-			curr = this.head.get_next();
+			Node new_element = new Node(new Block(1, 1));
+			new_element.get_data().set_shape_type();
+			new_element.get_data().set_block();
+			this.tail.set_next(new_element);
+			this.tail = new_element;
 			this.size++;
 		}
 		
@@ -28,10 +28,12 @@ public class Queue {
 	public Block dequeue_shape() {
 		Block out = this.head.get_data();
 		this.head = this.head.get_next();
-		Block new_tail = new Block(1, 1);
-		new_tail.set_shape_type();
-		new_tail.set_block();
-		this.tail = new Node(new_tail);
+		Node new_element = new Node(new Block(1, 1));
+		new_element.get_data().set_shape_type();
+		new_element.get_data().set_block();
+		this.tail.set_next(new_element);
+		this.tail = new_element;
+		this.size++;
 		return out;
 	}
 	public void swap_first_and_second() {
@@ -39,5 +41,14 @@ public class Queue {
 	}
 	public void print_shape(int position) {
 		
+	}
+	public String toString() {
+		String out = "";
+		Node curr = this.head;
+		while(curr != null) {
+			out += curr.get_data().toString() + "->";
+			curr = curr.get_next();
+		}
+		return out;
 	}
 }
