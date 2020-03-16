@@ -1,12 +1,16 @@
 public class Queue {
 	private Node head;
 	private Node tail;
+	private Block hold;
+	private boolean move_to_hold;
 	private int size;
 	private final int MAX_SIZE = 5;
 	
 	public Queue() {
 		this.head = null;
 		this.tail = null;
+		this.hold = null;
+		this.move_to_hold = true;
 		this.size = 0;
 	}
 	public void populate() {
@@ -36,8 +40,8 @@ public class Queue {
 		this.size++;
 		return out;
 	}
-	public void swap_first_and_second() {
-		
+	public void hold_shape() {
+		this.hold = this.dequeue_shape();
 	}
 	public void print_shape(int position) {
 		
@@ -48,6 +52,9 @@ public class Queue {
 		while(curr != null) {
 			out += curr.get_data().toString() + "->";
 			curr = curr.get_next();
+		}
+		if(this.hold != null) {
+			out += "HOLD: " + this.hold.toString();
 		}
 		return out;
 	}
