@@ -13,6 +13,7 @@ public class Queue {
 		this.move_to_hold = true;
 		this.size = 0;
 	}
+	
 	public void populate() {
 		this.tail = new Node(new Block(1, 1));
 		this.tail.get_data().set_shape_type();
@@ -29,6 +30,7 @@ public class Queue {
 		}
 		
 	}
+	
 	public Block dequeue_shape() {
 		Block out = this.head.get_data();
 		this.head = this.head.get_next();
@@ -40,15 +42,32 @@ public class Queue {
 		this.size++;
 		return out;
 	}
+	
 	public void hold_shape() {
 		if(this.move_to_hold) {
 			this.hold = this.dequeue_shape();
 			this.move_to_hold = false;
 		}
 	}
-	public void print_shape(int position) {
-		
+	
+	public Block get_hold() {
+		return this.hold;
 	}
+	
+	public void allow_move_to_hold() {
+		this.move_to_hold = true;
+	}
+	
+	public boolean get_move_to_hold() {
+		if(this.move_to_hold) {
+			return true;
+		}
+		return false;
+	}
+	
+	public void print_shape(int position) {
+	}
+	
 	public String toString() {
 		String out = "";
 		Node curr = this.head;

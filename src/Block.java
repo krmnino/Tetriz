@@ -163,6 +163,12 @@ public class Block {
 		}
 	}
 	
+	public void set_shape_type(int shape_type_) {
+		if(0 <= shape_type && shape_type <= 7) {
+			this.shape_type = shape_type_;
+		}
+	}
+	
 	public void set_indexes_array(int[] new_indexes_) { //set block's array of indexes. Be cautious when using this...
 		for(int i = 0; i < 3; i++)
 			this.indexes[i] = new_indexes_[i];
