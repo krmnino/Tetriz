@@ -86,9 +86,21 @@ public class Grid {
 		return false; //else, there is no collisions and return false
 	}
 	
-	public boolean set_control_block(int shape_type_) { //set control block at the top of the grid
+	public boolean set_control_block() {//set control block at the top of the grid
+		this.control = this.grid[CONTROL_ROW_COORDS][CONTROL_COLUMN_COORDS]; //this.control to be block in grid at CRC and CCC
+		this.control.set_shape_type(); //set shape type for control shape
+		this.control.set_childOf(this.control); //make control block be child of itself
+		if(!check_control_spawn_collisions()) { //if there is no collisions when spawning a shape
+			this.control.set_block(); //set control block in grid
+			map_shape(); //map shape in grid
+			return true; //return true
+		}
+		return false; //if check_control_spawn_collisions() returns true, then return false (could not spawn block)
+	}
+	
+	public boolean set_control_block(int shape_type_) { //set control block at the top of the grid taking integer as shape parameter
 			this.control = this.grid[CONTROL_ROW_COORDS][CONTROL_COLUMN_COORDS]; //this.control to be block in grid at CRC and CCC
-			this.control.set_shape_type(shape_type_); //set shape type for control shape
+			this.control.set_shape_type(shape_type_); //set shape type for control shape with fn parameter
 			this.control.set_childOf(this.control); //make control block be child of itself
 			if(!check_control_spawn_collisions()) { //if there is no collisions when spawning a shape
 				this.control.set_block(); //set control block in grid

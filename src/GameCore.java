@@ -14,7 +14,6 @@ public class GameCore extends JPanel {
 	private static JTextArea display;	//Creates text area where the grid is displayed
 	private static JLabel current_score;
 	private static Grid g = new Grid();	//Creates new grid of blocks object
-	private static Queue q = new Queue();
 	private static boolean game_running = true;
 	private static int score = 0;
 	
@@ -52,9 +51,7 @@ public class GameCore extends JPanel {
 	}
 	
 	public static void game_loop() {
-		q.populate();
-		int shape_type = q.dequeue_shape().get_shape_type();
-		g.set_control_block(shape_type);	
+		g.set_control_block();	//set initial control block in grid
 		display.setText(g.toString());	//display grid in display
 		while(game_running) { //actual game loop 
 			try {
@@ -63,13 +60,11 @@ public class GameCore extends JPanel {
 					int lines_completed = g.check_completed_lines(); //variable that saves number of lines completed
 					score += lines_completed * lines_completed * 10; // check if lines are completed and to score variable
 					current_score.setText("Score: " + score);
-					shape_type = q.dequeue_shape().get_shape_type();
-					if(!g.set_control_block(shape_type)) {	//set new control block at the top
+					if(!g.set_control_block()) {	//set new control block at the top
 						game_running = false;
 						break;
 					}
 				}
-				q.allow_move_to_hold();
 				display.setText(g.toString());	//else, allow the shape to move and update the grid 
 			} catch (Exception e) {
 				e.printStackTrace();	
@@ -101,13 +96,11 @@ public class GameCore extends JPanel {
 						int lines_completed = g.check_completed_lines(); //variable that saves number of lines completed
 						score += lines_completed * lines_completed * 10; // check if lines are completed and to score variable
 						current_score.setText("Score: " + score);
-						int shape_type = q.dequeue_shape().get_shape_type();
-						if(!g.set_control_block(shape_type)) { //check if spawn area of control block shape is empty
+						if(!g.set_control_block()) { //check if spawn area of control block shape is empty
 							game_running = false;
 							break;
 						}
 					}
-					q.allow_move_to_hold();
 					display.setText(g.toString());	//update screen after remapping
 					System.out.println("D - Right");	//display in console that 'd' was pressed
 					break;
@@ -117,20 +110,15 @@ public class GameCore extends JPanel {
 					display.setText(g.toString());	//update screen after remapping
 					System.out.println("S - Down");	//display in console that 's' was pressed
 					break;
-				case('C'):
-				case('c'):
-					
 				case(' '): //ESPACE - send shape down
 					g.send_shape_down();	//send control block down
 					int lines_completed = g.check_completed_lines(); //variable that saves number of lines completed
 					score += lines_completed * lines_completed * 10; // check if lines are completed and add to score variable
 					current_score.setText("Score: " + score);
-					int shape_type = q.dequeue_shape().get_shape_type();
-					if(!g.set_control_block(shape_type)) { //check if spawn area of control block shape is empty
+					if(!g.set_control_block()) { //check if spawn area of control block shape is empty
 						game_running = false;
 						break;
 					}
-					q.allow_move_to_hold();
 					display.setText(g.toString());	//update screen after remapping
 					System.out.println("ESP - Send down");	//display in console that ' ' was pressed
 					break;
@@ -147,6 +135,5 @@ public class GameCore extends JPanel {
 		set_GUI();	//set up the GUI and its elements
 		game_loop();	//start the game loop
 		display.setText("\n\n\n\n\n\n\n\n\n     GAME OVER\n    Final Score: " + score); //when game loop ends, print GAME OVER on display
-		
 	}
 }
