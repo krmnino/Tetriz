@@ -41,7 +41,10 @@ public class Queue {
 		return out;
 	}
 	public void hold_shape() {
-		this.hold = this.dequeue_shape();
+		if(this.move_to_hold) {
+			this.hold = this.dequeue_shape();
+			this.move_to_hold = false;
+		}
 	}
 	public void print_shape(int position) {
 		

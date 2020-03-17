@@ -137,6 +137,8 @@ public class GameCore extends JPanel {
 		System.out.println(q.toString());
 		q.hold_shape();
 		System.out.println(q.toString());
+		q.hold_shape();
+		System.out.println(q.toString());
 		/*
 		set_GUI();	//set up the GUI and its elements
 		game_loop();	//start the game loop
