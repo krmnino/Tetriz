@@ -43,6 +43,12 @@ public class Queue {
 		return out;
 	}
 	
+	public void set_hold(int shape_type_) {
+		this.hold = new Block(1, 1);
+		this.hold.set_shape_type(shape_type_);
+		this.hold.set_block();
+	}
+	
 	public void hold_shape() {
 		if(this.move_to_hold) {
 			this.hold = this.dequeue_shape();
@@ -54,10 +60,10 @@ public class Queue {
 		return this.hold;
 	}
 	
-	public void allow_move_to_hold() {
-		this.move_to_hold = true;
+	public void set_move_to_hold(boolean flag) {
+		this.move_to_hold = flag;
 	}
-	
+		
 	public boolean get_move_to_hold() {
 		if(this.move_to_hold) {
 			return true;

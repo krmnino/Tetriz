@@ -18,7 +18,7 @@ public class Grid {
 		initialize_grid();	//call initialize_grid fn() that initializes each block object in the grid
 	}
 	
-	public Block get_control() {	//function that returns reference to control block (used for debugging purposes)
+	public Block get_control() {	//function that returns reference to control block
 		return this.control;
 	}
 	
@@ -110,7 +110,7 @@ public class Grid {
 			return false; //if check_control_spawn_collisions() returns true, then return false (could not spawn block)
 	}
 	
-	private void map_shape() {	//maps the current control block and orbiting sub-blocks in the grid
+	protected void map_shape() {	//maps the current control block and orbiting sub-blocks in the grid
 		for(int i = 0; i < 3; i++) {	//for each orbiting block in control
 			int row_subblock;		//declare variables for row and column sub-block coordinates 
 			int column_subblock;
@@ -159,7 +159,11 @@ public class Grid {
 		}
 	}
 	
-	private void unmap_shape() {	//unmaps the current control block and orbiting sub-blocks in the grid
+	protected void unmap_control() {
+		this.control.clear_block();
+	}
+	
+	protected void unmap_shape() {	//unmaps the current control block and orbiting sub-blocks in the grid
 		for(int i = 0; i < 3; i++) {	//for each orbiting block in control
 			int row_subblock;	//declare variables for row and column sub-block coordinates 
 			int column_subblock;	
