@@ -166,6 +166,47 @@ public class Block {
 	public void set_shape_type(int shape_type_) {
 		if(0 <= shape_type && shape_type <= 7) {
 			this.shape_type = shape_type_;
+			switch(this.shape_type) {
+			case(1): //line
+				this.indexes[0] = 0;
+				this.indexes[1] = 2;
+				this.indexes[2] = 2;
+				break;
+			case(2): //square
+				this.indexes[0] = 1;
+				this.indexes[1] = 2;
+				this.indexes[2] = 1;
+				break;
+			case(3): //L-shape
+				this.indexes[0] = 0;
+				this.indexes[1] = 2;
+				this.indexes[2] = 3;
+				break;
+			case(4): //J-shape
+				this.indexes[0] = 0;
+				this.indexes[1] = 2;
+				this.indexes[2] = 0;
+				break;
+			case(5): //T-shape
+				this.indexes[0] = 3;
+				this.indexes[1] = 0;
+				this.indexes[2] = 1;
+				break;
+			case(6): //Z-shape
+				this.indexes[0] = 0;
+				this.indexes[1] = 3;
+				this.indexes[2] = 2;
+				break;
+			case(7): //S-shape
+				this.indexes[0] = 0;
+				this.indexes[1] = 1;
+				this.indexes[2] = 1;
+				break;
+			default: //default case, all indexes are 0 (no shape)
+				this.indexes[0] = 0;
+				this.indexes[1] = 0;
+				this.indexes[2] = 0;
+			}
 		}
 	}
 	
@@ -209,9 +250,9 @@ public class Block {
 	
 	public String display() { //return string value depending its isSet boolean flag
 		if(this.isSet) 	//if isSet is true...
-			return "0";	//return string "0" meaning that this block is occupied
+			return "\u25fc";	//return string "0" meaning that this block is occupied
 		else
-			return "_"; //else, return "_" meaning that this block is free
+			return "\u25fb"; //else, return "_" meaning that this block is free
 	}
 	
 	public String toString() {

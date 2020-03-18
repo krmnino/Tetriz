@@ -18,7 +18,7 @@ public class Grid {
 		initialize_grid();	//call initialize_grid fn() that initializes each block object in the grid
 	}
 	
-	public Block get_control() {	//function that returns reference to control block (used for debugging purposes)
+	public Block get_control() {	//function that returns reference to control block
 		return this.control;
 	}
 	
@@ -110,7 +110,7 @@ public class Grid {
 			return false; //if check_control_spawn_collisions() returns true, then return false (could not spawn block)
 	}
 	
-	private void map_shape() {	//maps the current control block and orbiting sub-blocks in the grid
+	protected void map_shape() {	//maps the current control block and orbiting sub-blocks in the grid
 		for(int i = 0; i < 3; i++) {	//for each orbiting block in control
 			int row_subblock;		//declare variables for row and column sub-block coordinates 
 			int column_subblock;
@@ -159,7 +159,11 @@ public class Grid {
 		}
 	}
 	
-	private void unmap_shape() {	//unmaps the current control block and orbiting sub-blocks in the grid
+	protected void unmap_control() {
+		this.control.clear_block();
+	}
+	
+	protected void unmap_shape() {	//unmaps the current control block and orbiting sub-blocks in the grid
 		for(int i = 0; i < 3; i++) {	//for each orbiting block in control
 			int row_subblock;	//declare variables for row and column sub-block coordinates 
 			int column_subblock;	
@@ -721,18 +725,16 @@ public class Grid {
 	}
 	
 	public String toString() { //displays grid using ASCII characters
-		String out = "._._._._._._._._._._._.\n|"; //initialize out string with the header of grid
+		String out = ""; //initialize out string with the header of grid
 		for(int i = 0; i < this.ROWS; i++) { //iterate through each row
 			for(int j = 0; j < this.COLUMNS; j++) { //iterate through each block in row
 				if(j == this.COLUMNS - 1) { //if j is at the last column of the grid
 					out += this.grid[i][j].display(); //append block.display() value to out string
 					if(i != this.ROWS - 1) //if i is not at the last row in grid 
-						out += "|\n|"; //append |, add new line, and add another |
-					else //if i is at the last row in grid
-						out += "|"; //just append |
+						out += "\n";
 				}
 				else //if j is not at the last column in row
-					out += this.grid[i][j].display() + "|"; //append block.display() value and |
+					out += this.grid[i][j].display(); //append block.display() value
 			}
 		}
 		return out; //return out string to the caller

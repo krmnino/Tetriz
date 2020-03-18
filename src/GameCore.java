@@ -12,8 +12,13 @@ import javax.swing.border.LineBorder;
 public class GameCore extends JPanel {
 	
 	private static JTextArea display;	//Creates text area where the grid is displayed
+	private static JTextArea hold_display;
+	private static JTextArea queue_1;
+	private static JTextArea queue_2;
+	private static JTextArea queue_3;
 	private static JLabel current_score;
 	private static Grid g = new Grid();	//Creates new grid of blocks object
+	private static Queue q = new Queue();
 	private static boolean game_running = true;
 	private static int score = 0;
 	
@@ -27,13 +32,13 @@ public class GameCore extends JPanel {
 		GameCore key_detector = new GameCore();	// initialize new instance of key detector class
 		display = new JTextArea();	//initialize new JTextArea to be the screen
 		display.setSize(120, 370);	//set size of display in pixels
-		display.setLocation(50, 20);	//set location of display in frame
+		display.setLocation(150, 20);	//set location of display in frame
 		display.setVisible(true);	//make display visible
 		display.setBackground(SystemColor.info);	//set display background color to an arbitrary color that contrasts
 		display.setBorder(new LineBorder(new Color(0, 0, 0)));	//let the display have a black border
 		current_score = new JLabel();
 		current_score.setSize(120, 30);
-		current_score.setLocation(50, 400);
+		current_score.setLocation(150, 400);
 		current_score.setVisible(true);
 		current_score.setBackground(SystemColor.info);
 		current_score.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -45,13 +50,17 @@ public class GameCore extends JPanel {
 		frame.add(current_score);
 		frame.setTitle("Tetriz");	//set frame title as "Tetriz"
 		frame.setFocusCycleRoot(true);	//set frame as root of focus traversal cycle
-		frame.setSize(160, 480);	//set frame size
+		frame.setSize(440, 480);	//set frame size
 		frame.setVisible(true);	//set frame visible (display window)
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	//set default close operation (press X to close)
 	}
 	
 	public static void game_loop() {
-		g.set_control_block();	//set initial control block in grid
+		q.populate();
+		int shape_type = q.dequeue_shape().get_shape_type();
+		System.out.println(shape_type);
+		//g.set_control_block(shape_type);
+		g.set_control_block(shape_type);
 		display.setText(g.toString());	//display grid in display
 		while(game_running) { //actual game loop 
 			try {
@@ -60,7 +69,8 @@ public class GameCore extends JPanel {
 					int lines_completed = g.check_completed_lines(); //variable that saves number of lines completed
 					score += lines_completed * lines_completed * 10; // check if lines are completed and to score variable
 					current_score.setText("Score: " + score);
-					if(!g.set_control_block()) {	//set new control block at the top
+					shape_type = q.dequeue_shape().get_shape_type();
+					if(!g.set_control_block(shape_type)) {	//set new control block at the top
 						game_running = false;
 						break;
 					}
@@ -96,7 +106,8 @@ public class GameCore extends JPanel {
 						int lines_completed = g.check_completed_lines(); //variable that saves number of lines completed
 						score += lines_completed * lines_completed * 10; // check if lines are completed and to score variable
 						current_score.setText("Score: " + score);
-						if(!g.set_control_block()) { //check if spawn area of control block shape is empty
+						int shape_type = q.dequeue_shape().get_shape_type();
+						if(!g.set_control_block(shape_type)) { //check if spawn area of control block shape is empty
 							game_running = false;
 							break;
 						}
@@ -110,15 +121,46 @@ public class GameCore extends JPanel {
 					display.setText(g.toString());	//update screen after remapping
 					System.out.println("S - Down");	//display in console that 's' was pressed
 					break;
+				case('C'):
+				case('c'):
+					if(q.get_hold() == null) {
+						g.unmap_shape();
+						q.set_hold(g.get_control().get_shape_type());
+						q.set_move_to_hold(false);
+						g.unmap_control();
+						if(!g.set_control_block(q.dequeue_shape().get_shape_type())) {
+							game_running = false;
+						}
+						display.setText(g.toString());
+						System.out.println(q.toString());
+					}
+					else if(q.get_move_to_hold()) {
+						g.unmap_shape();
+						int shape_type = q.get_hold().get_shape_type();
+						System.out.println(shape_type);
+						q.set_hold(q.dequeue_shape().get_shape_type());
+						q.set_move_to_hold(false);
+						g.unmap_control();
+						if(!g.set_control_block(shape_type)) {
+							game_running = false;
+						}
+						display.setText(g.toString());
+						System.out.println("C - Hold");
+						System.out.println(q.toString());
+
+					}
+					break;
 				case(' '): //ESPACE - send shape down
 					g.send_shape_down();	//send control block down
 					int lines_completed = g.check_completed_lines(); //variable that saves number of lines completed
 					score += lines_completed * lines_completed * 10; // check if lines are completed and add to score variable
 					current_score.setText("Score: " + score);
-					if(!g.set_control_block()) { //check if spawn area of control block shape is empty
+					int shape_type = q.dequeue_shape().get_shape_type();
+					if(!g.set_control_block(shape_type)) { //check if spawn area of control block shape is empty
 						game_running = false;
 						break;
 					}
+					q.set_move_to_hold(true);
 					display.setText(g.toString());	//update screen after remapping
 					System.out.println("ESP - Send down");	//display in console that ' ' was pressed
 					break;
@@ -135,5 +177,6 @@ public class GameCore extends JPanel {
 		set_GUI();	//set up the GUI and its elements
 		game_loop();	//start the game loop
 		display.setText("\n\n\n\n\n\n\n\n\n     GAME OVER\n    Final Score: " + score); //when game loop ends, print GAME OVER on display
+		
 	}
 }
