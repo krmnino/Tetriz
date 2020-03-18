@@ -725,19 +725,16 @@ public class Grid {
 	}
 	
 	public String toString() { //displays grid using ASCII characters
-		String out = ""; //"._._._._._._._._._._._.\n"; //initialize out string with the header of grid
+		String out = ""; //initialize out string with the header of grid
 		for(int i = 0; i < this.ROWS; i++) { //iterate through each row
 			for(int j = 0; j < this.COLUMNS; j++) { //iterate through each block in row
 				if(j == this.COLUMNS - 1) { //if j is at the last column of the grid
 					out += this.grid[i][j].display(); //append block.display() value to out string
 					if(i != this.ROWS - 1) //if i is not at the last row in grid 
 						out += "\n";
-						//out += "|\n|"; //append |, add new line, and add another |
-					//else //if i is at the last row in grid
-						//out += "|"; //just append |
 				}
 				else //if j is not at the last column in row
-					out += this.grid[i][j].display(); //+ "|"; //append block.display() value and |
+					out += this.grid[i][j].display(); //append block.display() value
 			}
 		}
 		return out; //return out string to the caller
