@@ -16,7 +16,6 @@ public class GameCore extends JPanel {
 	private static Grid g = new Grid();	//Creates new grid of blocks object
 	private static Queue q = new Queue();
 	private static boolean game_running = true;
-	private static boolean halt = false;
 	private static int score = 0;
 	
 	public GameCore() {
@@ -60,12 +59,7 @@ public class GameCore extends JPanel {
 		display.setText(g.toString());	//display grid in display
 		while(game_running) { //actual game loop 
 			try {
-				if(!halt) {
-					Thread.sleep(1000);	//make program sleep for 1 second before sending the next update
-				}
-				else {
-					continue;
-				}
+				Thread.sleep(1000);	//make program sleep for 1 second before sending the next update
 				if(!g.move_shape_down()) {	//if shape could not move
 					int lines_completed = g.check_completed_lines(); //variable that saves number of lines completed
 					score += lines_completed * lines_completed * 10; // check if lines are completed and to score variable
@@ -151,9 +145,7 @@ public class GameCore extends JPanel {
 					break;
 				case('C'):
 				case('c'):
-					halt = true;
 					hold_current_shape();
-					halt = false;
 					break;
 				case(' '): //ESPACE - send shape down
 					g.send_shape_down();	//send control block down
