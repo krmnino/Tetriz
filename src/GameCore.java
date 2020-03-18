@@ -174,9 +174,14 @@ public class GameCore extends JPanel {
 	}
 	
 	public static void main(String[] args) {
+		q.populate();
+		
+		
+		/*
 		set_GUI();	//set up the GUI and its elements
 		game_loop();	//start the game loop
 		display.setText("\n\n\n\n\n\n\n\n\n     GAME OVER\n    Final Score: " + score); //when game loop ends, print GAME OVER on display
+		*/
 		
 	}
 }
