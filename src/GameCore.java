@@ -176,7 +176,6 @@ public class GameCore extends JPanel {
 	public static void main(String[] args) {
 		q.populate();
 		
-		
 		/*
 		set_GUI();	//set up the GUI and its elements
 		game_loop();	//start the game loop
