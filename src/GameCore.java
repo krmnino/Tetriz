@@ -147,7 +147,6 @@ public class GameCore extends JPanel {
 						display.setText(g.toString());
 						System.out.println("C - Hold");
 						System.out.println(q.toString());
-
 					}
 					break;
 				case(' '): //ESPACE - send shape down
@@ -175,7 +174,8 @@ public class GameCore extends JPanel {
 	
 	public static void main(String[] args) {
 		q.populate();
-		
+		System.out.println(q.toString());
+		System.out.println(q.print_shape(2));
 		/*
 		set_GUI();	//set up the GUI and its elements
 		game_loop();	//start the game loop
