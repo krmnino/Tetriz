@@ -36,6 +36,14 @@ public class GameCore extends JPanel {
 		display.setVisible(true);	//make display visible
 		display.setBackground(SystemColor.info);	//set display background color to an arbitrary color that contrasts
 		display.setBorder(new LineBorder(new Color(0, 0, 0)));	//let the display have a black border
+
+		hold_display = new JTextArea();	//initialize new JTextArea to be the screen
+		hold_display.setSize(100, 100);	//set size of display in pixels
+		hold_display.setLocation(20, 20);	//set location of display in frame
+		hold_display.setVisible(true);	//make display visible
+		hold_display.setBackground(SystemColor.info);	//set display background color to an arbitrary color that contrasts
+		hold_display.setBorder(new LineBorder(new Color(0, 0, 0)));	//let the display have a black border
+		
 		current_score = new JLabel();
 		current_score.setSize(120, 30);
 		current_score.setLocation(150, 400);
@@ -47,6 +55,7 @@ public class GameCore extends JPanel {
 		frame.setLayout(null);	// not set a layout for the frame to allow place objects freely (any coordinates)
 		frame.add(key_detector); //add key detector object to frame
 		frame.add(display);	//add display to frame
+		frame.add(hold_display);
 		frame.add(current_score);
 		frame.setTitle("Tetriz");	//set frame title as "Tetriz"
 		frame.setFocusCycleRoot(true);	//set frame as root of focus traversal cycle
@@ -173,14 +182,15 @@ public class GameCore extends JPanel {
 	}
 	
 	public static void main(String[] args) {
+		/*
 		q.populate();
 		System.out.println(q.toString());
 		System.out.println(q.print_shape(2));
-		/*
+		*/
 		set_GUI();	//set up the GUI and its elements
 		game_loop();	//start the game loop
 		display.setText("\n\n\n\n\n\n\n\n\n     GAME OVER\n    Final Score: " + score); //when game loop ends, print GAME OVER on display
-		*/
+		
 		
 	}
 }
