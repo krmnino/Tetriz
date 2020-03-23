@@ -31,22 +31,43 @@ public class GameCore extends JPanel {
 	public static void set_GUI() {	//set GUI elements and launch it
 		GameCore key_detector = new GameCore();	// initialize new instance of key detector class
 		display = new JTextArea();	//initialize new JTextArea to be the screen
-		display.setSize(120, 370);	//set size of display in pixels
-		display.setLocation(150, 20);	//set location of display in frame
+		display.setSize(115, 355);	//set size of display in pixels
+		display.setLocation(80, 20);	//set location of display in frame
 		display.setVisible(true);	//make display visible
 		display.setBackground(SystemColor.info);	//set display background color to an arbitrary color that contrasts
 		display.setBorder(new LineBorder(new Color(0, 0, 0)));	//let the display have a black border
 
 		hold_display = new JTextArea();	//initialize new JTextArea to be the screen
-		hold_display.setSize(100, 100);	//set size of display in pixels
+		hold_display.setSize(45, 67);	//set size of display in pixels
 		hold_display.setLocation(20, 20);	//set location of display in frame
 		hold_display.setVisible(true);	//make display visible
 		hold_display.setBackground(SystemColor.info);	//set display background color to an arbitrary color that contrasts
 		hold_display.setBorder(new LineBorder(new Color(0, 0, 0)));	//let the display have a black border
 		
+		queue_1 = new JTextArea();	//initialize new JTextArea to be the screen
+		queue_1.setSize(45, 67);	//set size of display in pixels
+		queue_1.setLocation(210, 20);	//set location of display in frame
+		queue_1.setVisible(true);	//make display visible
+		queue_1.setBackground(SystemColor.info);	//set display background color to an arbitrary color that contrasts
+		queue_1.setBorder(new LineBorder(new Color(0, 0, 0)));	//let the display have a black border
+		
+		queue_2 = new JTextArea();	//initialize new JTextArea to be the screen
+		queue_2.setSize(45, 67);	//set size of display in pixels
+		queue_2.setLocation(210, 95);	//set location of display in frame
+		queue_2.setVisible(true);	//make display visible
+		queue_2.setBackground(SystemColor.info);	//set display background color to an arbitrary color that contrasts
+		queue_2.setBorder(new LineBorder(new Color(0, 0, 0)));	//let the display have a black border
+		
+		queue_3 = new JTextArea();	//initialize new JTextArea to be the screen
+		queue_3.setSize(45, 67);	//set size of display in pixels
+		queue_3.setLocation(210, 170);	//set location of display in frame
+		queue_3.setVisible(true);	//make display visible
+		queue_3.setBackground(SystemColor.info);	//set display background color to an arbitrary color that contrasts
+		queue_3.setBorder(new LineBorder(new Color(0, 0, 0)));	//let the display have a black border
+		
 		current_score = new JLabel();
-		current_score.setSize(120, 30);
-		current_score.setLocation(150, 400);
+		current_score.setSize(115, 30);
+		current_score.setLocation(80, 380);
 		current_score.setVisible(true);
 		current_score.setBackground(SystemColor.info);
 		current_score.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -57,6 +78,9 @@ public class GameCore extends JPanel {
 		frame.add(display);	//add display to frame
 		frame.add(hold_display);
 		frame.add(current_score);
+		frame.add(queue_1);
+		frame.add(queue_2);
+		frame.add(queue_3);
 		frame.setTitle("Tetriz");	//set frame title as "Tetriz"
 		frame.setFocusCycleRoot(true);	//set frame as root of focus traversal cycle
 		frame.setSize(440, 480);	//set frame size
@@ -68,9 +92,12 @@ public class GameCore extends JPanel {
 		q.populate();
 		int shape_type = q.dequeue_shape().get_shape_type();
 		System.out.println(shape_type);
-		//g.set_control_block(shape_type);
 		g.set_control_block(shape_type);
 		display.setText(g.toString());	//display grid in display
+		queue_1.setText(q.print_shape(1));
+		queue_2.setText(q.print_shape(2));
+		queue_3.setText(q.print_shape(3));
+		System.out.println(q.toString());
 		while(game_running) { //actual game loop 
 			try {
 				Thread.sleep(1000);	//make program sleep for 1 second before sending the next update

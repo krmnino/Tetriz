@@ -250,9 +250,9 @@ public class Block {
 	
 	public String display() { //return string value depending its isSet boolean flag
 		if(this.isSet) 	//if isSet is true...
-			return "\u2b1c";	//return string "0" meaning that this block is occupied
+			return "\u2b1b";	//return string "0" meaning that this block is occupied
 		else
-			return "\u2b1b"; //else, return "_" meaning that this block is free
+			return "\u2b1c"; //else, return "_" meaning that this block is free
 	}
 	
 	public String toString() {
