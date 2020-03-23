@@ -91,9 +91,9 @@ public class GameCore extends JPanel {
 	public static void game_loop() {
 		q.populate();
 		int shape_type = q.dequeue_shape().get_shape_type();
-		System.out.println(shape_type);
 		g.set_control_block(shape_type);
 		display.setText(g.toString());	//display grid in display
+		hold_display.setText(q.print_shape(0));
 		queue_1.setText(q.print_shape(1));
 		queue_2.setText(q.print_shape(2));
 		queue_3.setText(q.print_shape(3));

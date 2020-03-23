@@ -5,6 +5,11 @@ public class Queue {
 	private boolean move_to_hold;
 	private int size;
 	private Block[][][] shape_grids;
+	/* Hold shape: 0
+	 * Queue 1: 1 (queue.head)
+	 * Queue 2: 2 (queue.head.next)
+	 * Queue 3: 3 (queue.head.next.next)
+	 */
 	private final int[][] ORTHOGONAL_COORDINATES = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};	
 	//orthogonal coordinates for blocks orbiting the control block in an orthogonal position
 	private final int[][] DIAGONAL_COORDINATES = {{-1, 1}, {1, 1}, {1, -1}, {-1, -1}};
@@ -24,7 +29,7 @@ public class Queue {
 			for(int j = 0; j < 4; j++) { //iterate through every row in shape container
 				for(int k = 0; k < 4; k++) { //iterate through every column in row
 					this.shape_grids[i][j][k] = new Block(j, k); //initialize all 4 shape containers
-					if(i != 3 && j == 1 && k == 1) { //if current row and column position is 1, set this block
+					if(i != 0 && j == 1 && k == 1) { //if current row and column position is 1, set this block
 						this.shape_grids[i][j][k].set_block();
 					}
 				}
@@ -37,6 +42,8 @@ public class Queue {
 			int row_subblock;		//declare variables for row and column sub-block coordinates 
 			int column_subblock;
 			switch(this.shape_grids[position][1][1].get_shape_type()) {	//switch case based on control's shape type
+			case(0):
+				return;
 			case(1): //if shape is a line, then all orbiting blocks are orthogonal to the control block
 				row_subblock = this.shape_grids[position][1][1].get_row_coords() + this.ORTHOGONAL_COORDINATES[this.shape_grids[position][1][1].get_index(i)][0];
 				column_subblock = this.shape_grids[position][1][1].get_column_coords() + this.ORTHOGONAL_COORDINATES[this.shape_grids[position][1][1].get_index(i)][1];
@@ -103,14 +110,18 @@ public class Queue {
 		for(int i = 0; i < this.shape_grids.length; i++) {
 			switch(i) {
 			case 0:
-				this.shape_grids[i][1][1].set_shape_type(curr.get_data().get_shape_type());
-				map_shape(i);
+				//this.shape_grids[i][1][1].set_shape_type(curr.get_data().get_shape_type());
+				map_shape(0);
 				break;
 			case 1:
 				this.shape_grids[i][1][1].set_shape_type(curr.get_data().get_shape_type());
 				map_shape(i);
 				break;
 			case 2:
+				this.shape_grids[i][1][1].set_shape_type(curr.get_data().get_shape_type());
+				map_shape(i);
+				break;
+			case 3:
 				this.shape_grids[i][1][1].set_shape_type(curr.get_data().get_shape_type());
 				map_shape(i);
 				break;
