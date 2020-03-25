@@ -108,25 +108,12 @@ public class Queue {
 		}
 		Node curr = this.head;
 		for(int i = 0; i < this.shape_grids.length; i++) {
-			switch(i) {
-			case 0:
-				//this.shape_grids[i][1][1].set_shape_type(curr.get_data().get_shape_type());
+			if(i == 0) {
 				map_shape(0);
-				break;
-			case 1:
+			}
+			else {
 				this.shape_grids[i][1][1].set_shape_type(curr.get_data().get_shape_type());
 				map_shape(i);
-				break;
-			case 2:
-				this.shape_grids[i][1][1].set_shape_type(curr.get_data().get_shape_type());
-				map_shape(i);
-				break;
-			case 3:
-				this.shape_grids[i][1][1].set_shape_type(curr.get_data().get_shape_type());
-				map_shape(i);
-				break;
-			default:
-				break;
 			}
 			curr = curr.get_next();
 		}

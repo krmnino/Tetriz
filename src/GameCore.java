@@ -168,6 +168,11 @@ public class GameCore extends JPanel {
 							game_running = false;
 						}
 						display.setText(g.toString());
+						hold_display.setText(q.print_shape(0));
+						queue_1.setText(q.print_shape(1));
+						queue_2.setText(q.print_shape(2));
+						queue_3.setText(q.print_shape(3));
+						System.out.println("C - Hold");
 						System.out.println(q.toString());
 					}
 					else if(q.get_move_to_hold()) {
@@ -181,6 +186,10 @@ public class GameCore extends JPanel {
 							game_running = false;
 						}
 						display.setText(g.toString());
+						hold_display.setText(q.print_shape(0));
+						queue_1.setText(q.print_shape(1));
+						queue_2.setText(q.print_shape(2));
+						queue_3.setText(q.print_shape(3));
 						System.out.println("C - Hold");
 						System.out.println(q.toString());
 					}
