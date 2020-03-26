@@ -112,6 +112,10 @@ public class GameCore extends JPanel {
 					}
 				}
 				display.setText(g.toString());	//else, allow the shape to move and update the grid 
+				hold_display.setText(q.print_shape(0));
+				queue_1.setText(q.print_shape(1));
+				queue_2.setText(q.print_shape(2));
+				queue_3.setText(q.print_shape(3));
 			} catch (Exception e) {
 				e.printStackTrace();	
 			}
@@ -149,6 +153,10 @@ public class GameCore extends JPanel {
 						}
 					}
 					display.setText(g.toString());	//update screen after remapping
+					hold_display.setText(q.print_shape(0));
+					queue_1.setText(q.print_shape(1));
+					queue_2.setText(q.print_shape(2));
+					queue_3.setText(q.print_shape(3));
 					System.out.println("D - Right");	//display in console that 'd' was pressed
 					break;
 				case('D'):	//D - move shape right
@@ -206,6 +214,10 @@ public class GameCore extends JPanel {
 					}
 					q.set_move_to_hold(true);
 					display.setText(g.toString());	//update screen after remapping
+					hold_display.setText(q.print_shape(0));
+					queue_1.setText(q.print_shape(1));
+					queue_2.setText(q.print_shape(2));
+					queue_3.setText(q.print_shape(3));
 					System.out.println("ESP - Send down");	//display in console that ' ' was pressed
 					break;
 				default:

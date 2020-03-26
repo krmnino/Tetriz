@@ -89,7 +89,54 @@ public class Queue {
 	}
 	
 	private void unmap_shape(int position) {
-		
+		for(int i = 0; i < 3; i++) {	//for each orbiting block in control
+			int row_subblock;		//declare variables for row and column sub-block coordinates 
+			int column_subblock;
+			switch(this.shape_grids[position][1][1].get_shape_type()) {	//switch case based on control's shape type
+			case(0):
+				return;
+			case(1): //if shape is a line, then all orbiting blocks are orthogonal to the control block
+				row_subblock = this.shape_grids[position][1][1].get_row_coords() + this.ORTHOGONAL_COORDINATES[this.shape_grids[position][1][1].get_index(i)][0];
+				column_subblock = this.shape_grids[position][1][1].get_column_coords() + this.ORTHOGONAL_COORDINATES[this.shape_grids[position][1][1].get_index(i)][1];
+				//calculate the orbiting sub-blocks with their respective coordinate offsets
+				if(i < 2) { //if current block is less than 2, then set sub-block at the calculated row and column coordinates
+					this.shape_grids[position][row_subblock][column_subblock].clear_block();
+				}
+				else {	//if i is 2 or greater, then set sub-block with an additional offset to make the line 4 blocks long
+					if(this.shape_grids[position][1][1].get_orientation() == 0)	
+						this.shape_grids[position][row_subblock + 1][column_subblock].clear_block();
+					else if(this.shape_grids[position][1][1].get_orientation() == 1)
+						this.shape_grids[position][row_subblock][column_subblock - 1].clear_block();
+					else if(this.shape_grids[position][1][1].get_orientation() == 2)
+						this.shape_grids[position][row_subblock - 1][column_subblock].clear_block();
+					else 
+						this.shape_grids[position][row_subblock][column_subblock + 1].clear_block();
+				}
+				break;
+			case(5): //if shape is a T, then all orbiting sub-blocks have orthogonal coordinates 
+				row_subblock = this.shape_grids[position][1][1].get_row_coords() + this.ORTHOGONAL_COORDINATES[this.shape_grids[position][1][1].get_index(i)][0];
+				column_subblock = this.shape_grids[position][1][1].get_column_coords() + this.ORTHOGONAL_COORDINATES[this.shape_grids[position][1][1].get_index(i)][1];
+				//calculate the orbiting sub-blocks with their respective coordinate offsets
+				this.shape_grids[position][row_subblock][column_subblock].clear_block();
+				//the the i'th sub-block using the coordinates calculated previously
+				break;
+			default: //in this case, the shape contains at least 1 block that uses diagonal coordinates (L, S, and Z shapes)
+				if(i < 2) { //all blocks at i < 2 use orthogonal coordinates
+					row_subblock = this.shape_grids[position][1][1].get_row_coords() + this.ORTHOGONAL_COORDINATES[this.shape_grids[position][1][1].get_index(i)][0];
+					column_subblock = this.shape_grids[position][1][1].get_column_coords() + this.ORTHOGONAL_COORDINATES[this.shape_grids[position][1][1].get_index(i)][1];
+					//calculate the orbiting sub-blocks with their respective coordinate offsets
+					this.shape_grids[position][row_subblock][column_subblock].clear_block();
+					//the the i'th sub-block using the coordinates calculated previously
+				}
+				else { //when i = 2, the second sub-block uses diagonal coordinates
+					row_subblock = this.shape_grids[position][1][1].get_row_coords() + this.DIAGONAL_COORDINATES[this.shape_grids[position][1][1].get_index(i)][0];
+					column_subblock = this.shape_grids[position][1][1].get_column_coords() + this.DIAGONAL_COORDINATES[this.shape_grids[position][1][1].get_index(i)][1];
+					//calculate the orbiting sub-blocks with their respective coordinate offsets
+					this.shape_grids[position][row_subblock][column_subblock].clear_block();
+					//the the i'th sub-block using the coordinates calculated previously
+				}	
+			}
+		}
 	}
 	
 	public void populate() {
