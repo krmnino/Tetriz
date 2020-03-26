@@ -128,6 +128,13 @@ public class Queue {
 		this.tail.set_next(new_element);
 		this.tail = new_element;
 		this.size++;
+		Node curr = this.head;
+		for(int i = 1; i < this.shape_grids.length; i++) {
+			unmap_shape(i);
+			this.shape_grids[i][1][1].set_shape_type(curr.get_data().get_shape_type());
+			map_shape(i);
+			curr = curr.get_next();
+		}
 		return out;
 	}
 	
@@ -139,7 +146,7 @@ public class Queue {
 	
 	public void hold_shape() {
 		if(this.move_to_hold) {
-			this.hold = this.dequeue_shape();
+			this.shape_grids[0][1][1] = this.dequeue_shape();
 			this.move_to_hold = false;
 		}
 	}
