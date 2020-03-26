@@ -185,17 +185,17 @@ public class Queue {
 		return out;
 	}
 	
-	public void set_hold(int shape_type_) {
-		this.hold = new Block(1, 1);
-		this.hold.set_shape_type(shape_type_);
-		this.hold.set_block();
-	}
-	
-	public void hold_shape() {
+	public void hold_shape(int shape_type) {
+		unmap_shape(0);
 		if(this.move_to_hold) {
-			this.shape_grids[0][1][1] = this.dequeue_shape();
-			this.move_to_hold = false;
+			this.hold = new Block(1, 1);
 		}
+		this.hold.set_block();
+		this.hold.set_shape_type(shape_type);
+		this.shape_grids[0][1][1].copy_data(this.hold);
+		System.out.println(this.shape_grids[0][1][1]);
+		this.move_to_hold = false;
+		map_shape(0);
 	}
 	
 	public Block get_hold() {

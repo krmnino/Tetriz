@@ -169,38 +169,31 @@ public class GameCore extends JPanel {
 				case('c'):
 					if(q.get_hold() == null) {
 						g.unmap_shape();
-						q.set_hold(g.get_control().get_shape_type());
+						q.hold_shape(g.get_control().get_shape_type());
 						q.set_move_to_hold(false);
 						g.unmap_control();
 						if(!g.set_control_block(q.dequeue_shape().get_shape_type())) {
 							game_running = false;
 						}
-						display.setText(g.toString());
-						hold_display.setText(q.print_shape(0));
-						queue_1.setText(q.print_shape(1));
-						queue_2.setText(q.print_shape(2));
-						queue_3.setText(q.print_shape(3));
-						System.out.println("C - Hold");
-						System.out.println(q.toString());
+						
 					}
 					else if(q.get_move_to_hold()) {
 						g.unmap_shape();
 						int shape_type = q.get_hold().get_shape_type();
-						System.out.println(shape_type);
-						q.set_hold(q.dequeue_shape().get_shape_type());
+						q.hold_shape(q.dequeue_shape().get_shape_type());
 						q.set_move_to_hold(false);
 						g.unmap_control();
 						if(!g.set_control_block(shape_type)) {
 							game_running = false;
 						}
-						display.setText(g.toString());
-						hold_display.setText(q.print_shape(0));
-						queue_1.setText(q.print_shape(1));
-						queue_2.setText(q.print_shape(2));
-						queue_3.setText(q.print_shape(3));
-						System.out.println("C - Hold");
-						System.out.println(q.toString());
 					}
+					display.setText(g.toString());
+					hold_display.setText(q.print_shape(0));
+					queue_1.setText(q.print_shape(1));
+					queue_2.setText(q.print_shape(2));
+					queue_3.setText(q.print_shape(3));
+					System.out.println("C - Hold");
+					System.out.println(q.toString());
 					break;
 				case(' '): //ESPACE - send shape down
 					g.send_shape_down();	//send control block down
@@ -230,11 +223,6 @@ public class GameCore extends JPanel {
 	}
 	
 	public static void main(String[] args) {
-		/*
-		q.populate();
-		System.out.println(q.toString());
-		System.out.println(q.print_shape(2));
-		*/
 		set_GUI();	//set up the GUI and its elements
 		game_loop();	//start the game loop
 		display.setText("\n\n\n\n\n\n\n\n\n     GAME OVER\n    Final Score: " + score); //when game loop ends, print GAME OVER on display
