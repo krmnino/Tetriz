@@ -159,7 +159,7 @@ public class Grid {
 		}
 	}
 	
-	protected void unmap_control() {
+	protected void unmap_control() { //unmap control block when holding a shape
 		this.control.clear_block();
 	}
 	

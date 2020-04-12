@@ -139,19 +139,19 @@ public class Queue {
 		}
 	}
 	
-	public void populate() {
-		this.tail = new Node(new Block(1, 1));
-		this.tail.get_data().set_shape_type();
-		this.tail.get_data().set_block();
-		this.head = this.tail;
-		this.size++;
-		while(size < MAX_SIZE) {
-			Node new_element = new Node(new Block(1, 1));
-			new_element.get_data().set_shape_type();
-			new_element.get_data().set_block();
-			this.tail.set_next(new_element);
-			this.tail = new_element;
-			this.size++;
+	public void populate() { //populate queue with 5 shapes
+		this.tail = new Node(new Block(1, 1)); //initialize tail node with a new block
+		this.tail.get_data().set_shape_type(); //set shape type for the first block
+		this.tail.get_data().set_block(); //set "set" first block to true
+		this.head = this.tail; //since there is one element in queue -> head = tail
+		this.size++; //increase size by 1
+		while(size < MAX_SIZE) { //while current size is less than max possible size
+			Node new_element = new Node(new Block(1, 1)); //create new node and initialize it with a block
+			new_element.get_data().set_shape_type(); //set shape type for the current node block
+			new_element.get_data().set_block(); //set "set" current block to true
+			this.tail.set_next(new_element); //enqueue current node block to queue
+			this.tail = new_element; //set tail queue equal to current node
+			this.size++; //increase size by 1
 		}
 		Node curr = this.head;
 		for(int i = 0; i < this.shape_grids.length; i++) {
