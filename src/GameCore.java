@@ -12,11 +12,11 @@ import javax.swing.border.LineBorder;
 public class GameCore extends JPanel {
 	
 	private static JTextArea display;	//Creates text area where the grid is displayed
-	private static JTextArea hold_display;
-	private static JTextArea queue_1;
-	private static JTextArea queue_2;
-	private static JTextArea queue_3;
-	private static JLabel current_score;
+	private static JTextArea hold_display; //Creates text area for hold shape
+	private static JTextArea queue_1; //Creates text area for queued shape in position 1
+	private static JTextArea queue_2; //Creates text area for queued shape in position 2
+	private static JTextArea queue_3; //Creates text area for queued shape in position 3
+	private static JLabel current_score; //Variable that holds current score
 	private static Grid g = new Grid();	//Creates new grid of blocks object
 	private static Queue q = new Queue();
 	private static boolean game_running = true;
@@ -65,22 +65,22 @@ public class GameCore extends JPanel {
 		queue_3.setBackground(SystemColor.info);	//set display background color to an arbitrary color that contrasts
 		queue_3.setBorder(new LineBorder(new Color(0, 0, 0)));	//let the display have a black border
 		
-		current_score = new JLabel();
-		current_score.setSize(115, 30);
-		current_score.setLocation(80, 380);
-		current_score.setVisible(true);
-		current_score.setBackground(SystemColor.info);
-		current_score.setBorder(new LineBorder(new Color(0, 0, 0)));
-		current_score.setText("Score: " + Integer.toString(score));
+		current_score = new JLabel(); //delcare and initialize label
+		current_score.setSize(115, 30); //set size of label
+		current_score.setLocation(80, 380); //set location of label in frame
+		current_score.setVisible(true); //set label to be visible
+		current_score.setBackground(SystemColor.info); //set label color
+		current_score.setBorder(new LineBorder(new Color(0, 0, 0))); //set label border visible
+		current_score.setText("Score: " + Integer.toString(score)); //set initial text 
 		JFrame frame = new JFrame();	//set frame object that contains the display and other things
 		frame.setLayout(null);	// not set a layout for the frame to allow place objects freely (any coordinates)
 		frame.add(key_detector); //add key detector object to frame
 		frame.add(display);	//add display to frame
-		frame.add(hold_display);
-		frame.add(current_score);
-		frame.add(queue_1);
-		frame.add(queue_2);
-		frame.add(queue_3);
+		frame.add(hold_display); //add hold display to frame
+		frame.add(current_score); //add current score label to frame
+		frame.add(queue_1); //add queue 1 display to frame
+		frame.add(queue_2); //add queue 2 display to frame
+		frame.add(queue_3); //add queue 3 display to frame
 		frame.setTitle("Tetriz");	//set frame title as "Tetriz"
 		frame.setFocusCycleRoot(true);	//set frame as root of focus traversal cycle
 		frame.setSize(440, 480);	//set frame size
@@ -90,32 +90,30 @@ public class GameCore extends JPanel {
 	
 	public static void game_loop() {
 		q.populate();
-		int shape_type = q.dequeue_shape().get_shape_type();
-		g.set_control_block(shape_type);
+		int shape_type = q.dequeue_shape().get_shape_type(); //
+		g.set_control_block(shape_type); //set control block with shape type as parameter
 		display.setText(g.toString());	//display grid in display
 		hold_display.setText(q.print_shape(0));
-		queue_1.setText(q.print_shape(1));
-		queue_2.setText(q.print_shape(2));
-		queue_3.setText(q.print_shape(3));
-		System.out.println(q.toString());
+		queue_1.setText(q.print_shape(1)); //display queued shape in position 1
+		queue_2.setText(q.print_shape(2)); //display queued shape in position 2
+		queue_3.setText(q.print_shape(3)); //display queued shape in position 3
 		while(game_running) { //actual game loop 
 			try {
 				Thread.sleep(1000);	//make program sleep for 1 second before sending the next update
-				if(!g.move_shape_down()) {	//if shape could not move
+				if(!g.move_shape_down()) {	//if shape could not move down
 					int lines_completed = g.check_completed_lines(); //variable that saves number of lines completed
 					score += lines_completed * lines_completed * 10; // check if lines are completed and to score variable
-					current_score.setText("Score: " + score);
-					shape_type = q.dequeue_shape().get_shape_type();
-					if(!g.set_control_block(shape_type)) {	//set new control block at the top
-						game_running = false;
-						break;
+					current_score.setText("Score: " + score); //update current score
+					shape_type = q.dequeue_shape().get_shape_type(); //dequeue shape and get its shape type
+					if(!g.set_control_block(shape_type)) {	//set new control block at the top, if not possible
+						game_running = false; //then set to false
 					}
 				}
 				display.setText(g.toString());	//else, allow the shape to move and update the grid 
 				hold_display.setText(q.print_shape(0));
-				queue_1.setText(q.print_shape(1));
-				queue_2.setText(q.print_shape(2));
-				queue_3.setText(q.print_shape(3));
+				queue_1.setText(q.print_shape(1)); //display queued shape in position 1
+				queue_2.setText(q.print_shape(2)); //display queued shape in position 2
+				queue_3.setText(q.print_shape(3)); //display queued shape in position 3
 			} catch (Exception e) {
 				e.printStackTrace();	
 			}
@@ -171,23 +169,23 @@ public class GameCore extends JPanel {
 						g.unmap_shape(); //unmap control shape from grid
 						q.hold_shape(g.get_control().get_shape_type()); //hold control shape my getting its shape type
 						q.set_move_to_hold(false); //set move_to_hold flag to false
-						g.unmap_control(); //
-						if(!g.set_control_block(q.dequeue_shape().get_shape_type())) {
-							game_running = false;
+						g.unmap_control(); //unmap control block from grid
+						if(!g.set_control_block(q.dequeue_shape().get_shape_type())) { //if cannot set control block in grid
+							game_running = false; //stop game
 						}
 					}
-					else if(q.get_move_to_hold()) {
-						g.unmap_shape();
-						int shape_type = q.get_hold().get_shape_type();
-						q.hold_shape(q.dequeue_shape().get_shape_type());
-						q.set_move_to_hold(false);
-						g.unmap_control();
-						if(!g.set_control_block(shape_type)) {
-							game_running = false;
+					else if(q.get_move_to_hold()) { //if move_to_hold flag is true
+						g.unmap_shape(); //unmap shape from grid
+						int shape_type = q.get_hold().get_shape_type(); //get shape type from hold block variable
+						q.hold_shape(q.dequeue_shape().get_shape_type()); //hold next shape from queue by dequeueing next shape
+						q.set_move_to_hold(false); //set move_to_hold variable to false
+						g.unmap_control(); //unmap control block from grid
+						if(!g.set_control_block(shape_type)) { //if cannot set control block in grid
+							game_running = false; //stop game
 						}
 					}
-					display.setText(g.toString());
-					hold_display.setText(q.print_shape(0));
+					display.setText(g.toString()); //update main screen
+					hold_display.setText(q.print_shape(0)); //display hold shape
 					queue_1.setText(q.print_shape(1)); //display queued shape in position 1
 					queue_2.setText(q.print_shape(2)); //display queued shape in position 2
 					queue_3.setText(q.print_shape(3)); //display queued shape in position 3
@@ -203,12 +201,12 @@ public class GameCore extends JPanel {
 						game_running = false;
 						break;
 					}
-					q.set_move_to_hold(true);
+					q.set_move_to_hold(true); //set move_to_hold flag to true
 					display.setText(g.toString());	//update screen after remapping
-					hold_display.setText(q.print_shape(0));
-					queue_1.setText(q.print_shape(1));
-					queue_2.setText(q.print_shape(2));
-					queue_3.setText(q.print_shape(3));
+					hold_display.setText(q.print_shape(0)); //display hold shape
+					queue_1.setText(q.print_shape(1)); //display queued shape in position 1
+					queue_2.setText(q.print_shape(2)); //display queued shape in position 2
+					queue_3.setText(q.print_shape(3)); //display queued shape in position 3
 					System.out.println("ESP - Send down");	//display in console that ' ' was pressed
 					break;
 				default:
@@ -223,8 +221,6 @@ public class GameCore extends JPanel {
 	public static void main(String[] args) {
 		set_GUI();	//set up the GUI and its elements
 		game_loop();	//start the game loop
-		display.setText("\n\n\n\n\n\n\n\n\n     GAME OVER\n    Final Score: " + score); //when game loop ends, print GAME OVER on display
-		
-		
+		display.setText("\n\n\n\n\n\n\n\n\n     GAME OVER\n    Final Score: " + score); //when game loop ends, print GAME OVER on display		
 	}
 }
