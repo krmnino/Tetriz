@@ -153,10 +153,10 @@ public class GameCore extends JPanel {
 						}
 					}
 					display.setText(g.toString());	//update screen after remapping
-					hold_display.setText(q.print_shape(0));
-					queue_1.setText(q.print_shape(1));
-					queue_2.setText(q.print_shape(2));
-					queue_3.setText(q.print_shape(3));
+					hold_display.setText(q.print_shape(0)); //display shape on hold
+					queue_1.setText(q.print_shape(1)); //display queued shape in position 1
+					queue_2.setText(q.print_shape(2)); //display queued shape in position 2
+					queue_3.setText(q.print_shape(3)); //display queued shape in position 3
 					System.out.println("D - Right");	//display in console that 'd' was pressed
 					break;
 				case('D'):	//D - move shape right
@@ -166,16 +166,15 @@ public class GameCore extends JPanel {
 					System.out.println("S - Down");	//display in console that 's' was pressed
 					break;
 				case('C'):
-				case('c'):
+				case('c'): //C - hold control shape
 					if(q.get_hold() == null) {
-						g.unmap_shape();
-						q.hold_shape(g.get_control().get_shape_type());
-						q.set_move_to_hold(false);
-						g.unmap_control();
+						g.unmap_shape(); //unmap control shape from grid
+						q.hold_shape(g.get_control().get_shape_type()); //hold control shape my getting its shape type
+						q.set_move_to_hold(false); //set move_to_hold flag to false
+						g.unmap_control(); //
 						if(!g.set_control_block(q.dequeue_shape().get_shape_type())) {
 							game_running = false;
 						}
-						
 					}
 					else if(q.get_move_to_hold()) {
 						g.unmap_shape();
@@ -189,17 +188,16 @@ public class GameCore extends JPanel {
 					}
 					display.setText(g.toString());
 					hold_display.setText(q.print_shape(0));
-					queue_1.setText(q.print_shape(1));
-					queue_2.setText(q.print_shape(2));
-					queue_3.setText(q.print_shape(3));
+					queue_1.setText(q.print_shape(1)); //display queued shape in position 1
+					queue_2.setText(q.print_shape(2)); //display queued shape in position 2
+					queue_3.setText(q.print_shape(3)); //display queued shape in position 3
 					System.out.println("C - Hold");
-					System.out.println(q.toString());
 					break;
 				case(' '): //ESPACE - send shape down
 					g.send_shape_down();	//send control block down
 					int lines_completed = g.check_completed_lines(); //variable that saves number of lines completed
 					score += lines_completed * lines_completed * 10; // check if lines are completed and add to score variable
-					current_score.setText("Score: " + score);
+					current_score.setText("Score: " + score); //update current score
 					int shape_type = q.dequeue_shape().get_shape_type();
 					if(!g.set_control_block(shape_type)) { //check if spawn area of control block shape is empty
 						game_running = false;
